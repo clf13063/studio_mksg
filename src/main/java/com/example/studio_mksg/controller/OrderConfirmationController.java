@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class OrderInputController {
+public class OrderConfirmationController {
     //ユーザ登録画面表示
-    @GetMapping("/orderInput")
-    public ModelAndView showOrderInputForm(){
+    @GetMapping("/orderConfirmation")
+    public ModelAndView showOrderConfirmationForm(){
         ModelAndView mav = new ModelAndView();
         OrderForm orderForm = new OrderForm();
-        mav.setViewName("/orderInput");
+        mav.setViewName("/orderConfirmation");
         mav.addObject("orderForm",orderForm);
         return mav;
     }

@@ -1,10 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
+    <title>注文情報入力</title>
 </head>
 <body>
-
+<div class="header-contents">
+    <h1>studio_mksg</h1>
+    <h2>注文情報入力</h2>
+</div>
+<div class="main-contents">
+    <div class="order-form">
+        <div class="order-text">
+        お届け先情報の入力<br>
+        お客様情報
+        </div>
+    <form method="get" th:action="@{/orderConfirmation}" th:object="${orderForm}">
+        <table class="order-form-table">
+            <tr>
+                <th><label>お名前</label></th>
+                <td>
+                    <input type="text" th:field="*{lastName}"/>
+                    <input type="text" th:field="*{firstName}"/><br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>郵便番号</label></th>
+                <td><input type="text" th:field="*{postcode}"/></td>
+            </tr>
+            <tr>
+                <th><label>住所</label></th>
+                <td><input type="text" th:field="*{address}"/></td>
+            </tr>
+            <tr>
+                <th><label>電話番号</label></th>
+                <td><input type="text" th:field="*{tel}"/></td>
+            </tr>
+        </table>
+            <div class="order-text">
+                お届け先情報<br>
+            </div>
+            <input type="checkbox" th:field="*{differentReceiver}" id="receiver-checkbox"/>
+            お客様情報と異なる（お届け先情報がお客様情報と異なる場合、チャックを入れて入力してください）
+        <table class="order-form-table" >
+            <tr>
+                <th><label>お名前（お届け先)</label></th>
+                <td>
+                    <input type="text" th:field="*{receiverLastName}" class="receiver-input" disabled/>
+                    <input type="text" th:field="*{receiverFirstName}" class="receiver-input" disabled/><br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>郵便番号（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverPostcode}" class="receiver-input" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>住所（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverAddress}" class="receiver-input" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>電話番号（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverTel}" class="receiver-input" disabled/></td>
+            </tr>
+        </table>
+        <div class="order-text">
+            お支払方法<br>
+            <input type="radio" th:field="*{paymentMethod}" value="1"/> クレジットカード<br>
+            カード番号
+            <input type="text" th:field="*{creditNumber}"/><br>
+            セキュリティコード
+            <input type="text" th:field="*{securityCode}"/><br>
+            有効期限　
+            <select id="expiryMonth" name="expiryMonth">
+                <option value="" selected></option>
+                <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}"
+                        th:text="${i}" th:selected="${i == expiryMonth}"></option>
+            </select>
+            月
+            <select id="expiryYear" name="expiryYear">
+                <option value="" selected></option>
+                <option th:each="i : ${#numbers.sequence(2025, 2035)}" th:value="${i}"
+                        th:text="${i}" th:selected="${i == expiryYear}"></option>
+            </select>
+            年<br>
+            支払い方法
+            <select th:field="*{numberOfPayment}">
+                <option value="" selected></option>
+                <option value="1" th:selected="${numberOfPayment == 1}">一括払い</option>
+                <option value="2" th:selected="${numberOfPayment == 2}">2回払い</option>
+                <option value="3" th:selected="${numberOfPayment == 3}">3回払い</option>
+                <option value="4" th:selected="${numberOfPayment == 4}">6回払い</option>
+                <option value="5" th:selected="${numberOfPayment == 5}">リボ払い</option>
+            </select><br>
+            <input type="radio" th:field="*{paymentMethod}" value="2"/>代金引換<br>
+            <input type="radio" th:field="*{paymentMethod}" value="3"/>コンビニ<br>
+            メールアドレス<br>
+            メールアドレス<input type="text" th:field="*{email}"/><br>
+            メールアドレス(確認用)<input type="text" th:field="*{confirmationEmail}"/><br>
+            ギフト設定<br>
+            ギフト包装
+            <input type="radio" th:field="*{giftHope}" value="0"/>希望しない<br>
+            <input type="radio" th:field="*{giftHope}" value="1"/>希望する<br>
+            ※大型の商品はリボンのみとなります<br>
+            <input type="checkbox" th:field="*{giftMassageFlag}" id="giftMassage-checkbox"/>
+            ギフトメッセージ（100文字以内）<br>
+            <input type="text" th:field="*{giftMassage}" class="giftMassage-input" disabled/><br>
+            商品<br>
+            <div class="button">
+            <button type="button"><input class="confirm-button" type="submit" value="注文情報確認画面へ"/></button>
+                </div>
+        </div>
+    </form>
+    </div>
+</div>
+</div>
 </body>
 </html>

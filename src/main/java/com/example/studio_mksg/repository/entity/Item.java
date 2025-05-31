@@ -1,5 +1,4 @@
 package com.example.studio_mksg.repository.entity;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
