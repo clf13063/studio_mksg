@@ -34,6 +34,7 @@ public class OrderForm {
     private String giftMassage;
 
     private List<Integer> itemIds = new ArrayList<>();
+    private List<String> itemImages = new ArrayList<>();
     private List<String> itemNames = new ArrayList<>();
     private List<BigDecimal> prices = new ArrayList<>();
     private List<Integer> quantities;

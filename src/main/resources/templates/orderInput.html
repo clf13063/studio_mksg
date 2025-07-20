@@ -179,7 +179,7 @@
             <table class="item-form-table">
                 <thead>
                 <tr>
-                    <th>商品ID</th>
+                    <th></th>
                     <th>商品名</th>
                     <th>単価(円)</th>
                     <th>数量</th>
@@ -188,7 +188,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="i : ${#numbers.sequence(0, orderForm.itemIds.size() - 1)}">
-                    <td th:text="${orderForm.itemIds[i]}"></td>
+                    <td> <img th:src="${orderForm.itemImages[i]}" alt="商品画像" class="item-image"></td>
                     <td th:text="${orderForm.itemNames[i]}"></td>
                     <td th:text="${orderForm.prices[i]}"></td>
                     <td th:text="${orderForm.quantities[i]}"></td>
@@ -196,7 +196,9 @@
                 </tr>
                 </tbody>
             </table>
+            <div class = "total-amount">
             <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+            </div>
 
             <div class="button">
                 <button type="button"><input class="confirm-button" type="submit" value="注文情報確認画面へ"/></button>
