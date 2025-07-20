@@ -14,107 +14,195 @@
 <div class="main-contents">
     <div class="order-form">
         <div class="order-text">
-        お届け先情報の入力<br>
-        お客様情報
+            お届け先情報の入力<br>
+            お客様情報
         </div>
-    <form method="get" th:action="@{/orderConfirmation}" th:object="${orderForm}">
-        <table class="order-form-table">
-            <tr>
-                <th><label>お名前</label></th>
-                <td>
-                    <input type="text" th:field="*{lastName}"/>
-                    <input type="text" th:field="*{firstName}"/><br>
-                </td>
-            </tr>
-            <tr>
-                <th><label>郵便番号</label></th>
-                <td><input type="text" th:field="*{postcode}"/></td>
-            </tr>
-            <tr>
-                <th><label>住所</label></th>
-                <td><input type="text" th:field="*{address}"/></td>
-            </tr>
-            <tr>
-                <th><label>電話番号</label></th>
-                <td><input type="text" th:field="*{tel}"/></td>
-            </tr>
-        </table>
+        <form method="post" th:action="@{/orderInputCheck}" th:object="${orderForm}">
+            <table class="order-form-table">
+                <tr>
+                    <th><label>お名前</label></th>
+                    <td>
+                        <input type="text" th:field="*{lastName}"/>
+                        <input type="text" th:field="*{firstName}"/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('lastName')}" th:errors="*{firstName}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>郵便番号</label></th>
+                    <td>
+                        <input type="text" id="zipcode" th:field="*{postcode}" placeholder="例: 1000001">
+                        <button type="button" onclick="searchAddressMain()">検索</button>
+                        <p id="result" style="color: red;"></p>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>住所</label></th>
+                    <td><input type="text" th:field="*{address}"/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>電話番号</label></th>
+                    <td><input type="text" th:field="*{tel}"/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"/>
+                    </td>
+                </tr>
+            </table>
+            <br>
             <div class="order-text">
                 お届け先情報<br>
             </div>
             <input type="checkbox" th:field="*{differentReceiver}" id="receiver-checkbox"/>
-            お客様情報と異なる（お届け先情報がお客様情報と異なる場合、チャックを入れて入力してください）
-        <table class="order-form-table" >
-            <tr>
-                <th><label>お名前（お届け先)</label></th>
-                <td>
-                    <input type="text" th:field="*{receiverLastName}" class="receiver-input" disabled/>
-                    <input type="text" th:field="*{receiverFirstName}" class="receiver-input" disabled/><br>
-                </td>
-            </tr>
-            <tr>
-                <th><label>郵便番号（お届け先)</label></th>
-                <td><input type="text" th:field="*{receiverPostcode}" class="receiver-input" disabled/></td>
-            </tr>
-            <tr>
-                <th><label>住所（お届け先)</label></th>
-                <td><input type="text" th:field="*{receiverAddress}" class="receiver-input" disabled/></td>
-            </tr>
-            <tr>
-                <th><label>電話番号（お届け先)</label></th>
-                <td><input type="text" th:field="*{receiverTel}" class="receiver-input" disabled/></td>
-            </tr>
-        </table>
-        <div class="order-text">
-            お支払方法<br>
-            <input type="radio" th:field="*{paymentMethod}" value="1"/> クレジットカード<br>
-            カード番号
-            <input type="text" th:field="*{creditNumber}"/><br>
-            セキュリティコード
-            <input type="text" th:field="*{securityCode}"/><br>
-            有効期限　
-            <select id="expiryMonth" name="expiryMonth">
-                <option value="" selected></option>
-                <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}"
-                        th:text="${i}" th:selected="${i == expiryMonth}"></option>
-            </select>
-            月
-            <select id="expiryYear" name="expiryYear">
-                <option value="" selected></option>
-                <option th:each="i : ${#numbers.sequence(2025, 2035)}" th:value="${i}"
-                        th:text="${i}" th:selected="${i == expiryYear}"></option>
-            </select>
-            年<br>
-            支払い方法
-            <select th:field="*{numberOfPayment}">
-                <option value="" selected></option>
-                <option value="1" th:selected="${numberOfPayment == 1}">一括払い</option>
-                <option value="2" th:selected="${numberOfPayment == 2}">2回払い</option>
-                <option value="3" th:selected="${numberOfPayment == 3}">3回払い</option>
-                <option value="4" th:selected="${numberOfPayment == 4}">6回払い</option>
-                <option value="5" th:selected="${numberOfPayment == 5}">リボ払い</option>
-            </select><br>
-            <input type="radio" th:field="*{paymentMethod}" value="2"/>代金引換<br>
-            <input type="radio" th:field="*{paymentMethod}" value="3"/>コンビニ<br>
-            メールアドレス<br>
-            メールアドレス<input type="text" th:field="*{email}"/><br>
-            メールアドレス(確認用)<input type="text" th:field="*{confirmationEmail}"/><br>
-            ギフト設定<br>
-            ギフト包装
-            <input type="radio" th:field="*{giftHope}" value="0"/>希望しない<br>
-            <input type="radio" th:field="*{giftHope}" value="1"/>希望する<br>
-            ※大型の商品はリボンのみとなります<br>
-            <input type="checkbox" th:field="*{giftMassageFlag}" id="giftMassage-checkbox"/>
-            ギフトメッセージ（100文字以内）<br>
-            <input type="text" th:field="*{giftMassage}" class="giftMassage-input" disabled/><br>
-            商品<br>
+            お客様情報と異なる（お届け先情報がお客様情報と異なる場合、チェックを入れて入力してください）
+            <!-- differentReceiver が true の場合のみ表示 -->
+            <table class="order-form-table">
+                <tr>
+                    <th><label>お名前（お届け先)</label></th>
+                    <td>
+                        <input type="text" th:field="*{receiverLastName}" class="receiver-input" disabled/>
+                        <input type="text" th:field="*{receiverFirstName}" class="receiver-input" disabled/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('receiverLastName')}"
+                             th:errors="*{receiverLastName}"/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('receiverFirstName')}"
+                             th:errors="*{receiverFirstName}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>郵便番号（お届け先）</label></th>
+                    <td>
+                        <input type="text" id="receiverZipcode" th:field="*{receiverPostcode}" class="receiver-input"
+                               disabled/>
+                        <button type="button" onclick="searchReceiverAddress()"
+                                class="receiver-search-btn receiver-input" disabled>検索
+                        </button>
+                        <p id="receiverResult" style="color: red;"></p>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('receiverPostcode')}"
+                             th:errors="*{receiverPostcode}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>住所（お届け先）</label></th>
+                    <td>
+                        <input type="text" id="receiverAddress" th:field="*{receiverAddress}" class="receiver-input"
+                               disabled/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('receiverAddress')}"
+                             th:errors="*{receiverAddress}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>電話番号（お届け先)</label></th>
+                    <td><input type="text" th:field="*{receiverTel}" class="receiver-input" disabled/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('receiverTel')}"
+                             th:errors="*{receiverTel}"/>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="order-form-table">
+                <tr>
+                    <th><label>お支払方法</label></th>
+                    <td>
+                        <input type="radio" th:field="*{paymentMethod}" value="1"/> クレジットカード<br>
+                        カード番号
+                        <input type="text" th:field="*{creditNumber}"/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('creditNumber')}"
+                             th:errors="*{creditNumber}"/>
+                        セキュリティコード
+                        <input type="text" th:field="*{securityCode}"/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('securityCode')}"
+                             th:errors="*{securityCode}"/>
+                        有効期限　
+                        <select id="expiryMonth" name="expiryMonth">
+                            <option value="" selected></option>
+                            <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}"
+                                    th:text="${i}" th:selected="${i == expiryMonth}"></option>
+                        </select>
+                        月
+                        <select id="expiryYear" name="expiryYear">
+                            <option value="" selected></option>
+                            <option th:each="i : ${#numbers.sequence(2025, 2035)}" th:value="${i}"
+                                    th:text="${i}" th:selected="${i == expiryYear}"></option>
+                        </select>
+                        年<br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('expiryMonth')}"
+                             th:errors="*{expiryMonth}"/>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('expiryYear')}"
+                             th:errors="*{expiryYear}"/>
+                        支払い方法
+                        <select th:field="*{numberOfPayment}">
+                            <option value="" selected></option>
+                            <option value="1" th:selected="${numberOfPayment == 1}">一括払い</option>
+                            <option value="2" th:selected="${numberOfPayment == 2}">2回払い</option>
+                            <option value="3" th:selected="${numberOfPayment == 3}">3回払い</option>
+                            <option value="4" th:selected="${numberOfPayment == 4}">6回払い</option>
+                            <option value="5" th:selected="${numberOfPayment == 5}">リボ払い</option>
+                        </select><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('numberOfPayment')}"
+                             th:errors="*{numberOfPayment}"/>
+                        <input type="radio" th:field="*{paymentMethod}" value="2"/>代金引換<br>
+                        <input type="radio" th:field="*{paymentMethod}" value="3"/>コンビニ<br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('paymentMethod')}"
+                             th:errors="*{paymentMethod}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>メールアドレス</label></th>
+                    <td>
+                        メールアドレス<input type="text" th:field="*{email}"/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/>
+                        メールアドレス(確認用)<input type="text" th:field="*{confirmationEmail}"/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('confirmationEmail')}"
+                             th:errors="*{confirmationEmail}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>ギフト設定</label></th>
+                    <td>
+                        ギフト包装<br>
+                        <input type="radio" th:field="*{giftHope}" value="0"/>希望しない<br>
+                        <input type="radio" th:field="*{giftHope}" value="1"/>希望する<br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('giftHope')}" th:errors="*{giftHope}"/>
+                        ※大型の商品はリボンのみとなります<br>
+                        <input type="checkbox" th:field="*{giftMassageFlag}" id="giftMassage-checkbox"/>
+                        ギフトメッセージ（100文字以内）<br>
+                        <input type="text" th:field="*{giftMassage}" class="giftMassage-input" disabled/><br>
+                        <div class="errorMessages" th:if="${#fields.hasErrors('giftMassage')}"
+                             th:errors="*{giftMassage}"/>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 商品一覧表示 -->
+            <br>商品<br>
+            <table class="item-form-table">
+                <thead>
+                <tr>
+                    <th>商品ID</th>
+                    <th>商品名</th>
+                    <th>単価(円)</th>
+                    <th>数量</th>
+                    <th>小計(円)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="i : ${#numbers.sequence(0, orderForm.itemIds.size() - 1)}">
+                    <td th:text="${orderForm.itemIds[i]}"></td>
+                    <td th:text="${orderForm.itemNames[i]}"></td>
+                    <td th:text="${orderForm.prices[i]}"></td>
+                    <td th:text="${orderForm.quantities[i]}"></td>
+                    <td th:text="${orderForm.subtotals[i]}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+
             <div class="button">
-            <button type="button"><input class="confirm-button" type="submit" value="注文情報確認画面へ"/></button>
-                </div>
-        </div>
-    </form>
+                <button type="button"><input class="confirm-button" type="submit" value="注文情報確認画面へ"/></button>
+            </div>
+        </form>
     </div>
-</div>
 </div>
 </body>
 </html>

@@ -3,6 +3,10 @@ package com.example.studio_mksg.controller.form;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class OrderForm {
@@ -28,5 +32,11 @@ public class OrderForm {
     private String giftHope;
     private Boolean giftMassageFlag;
     private String giftMassage;
-    private String total_amount;
+
+    private List<Integer> itemIds = new ArrayList<>();
+    private List<String> itemNames = new ArrayList<>();
+    private List<BigDecimal> prices = new ArrayList<>();
+    private List<Integer> quantities;
+    private List<BigDecimal> subtotals = new ArrayList<>();
+    private BigDecimal totalAmount;
 }
