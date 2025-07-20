@@ -15,5 +15,6 @@ public class OrderConfirmationController {
         mav.setViewName("/orderConfirmation");
         mav.addObject("orderForm",orderForm);
         return mav;
+
     }
 }
