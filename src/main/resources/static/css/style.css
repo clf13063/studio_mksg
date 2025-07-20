@@ -9,6 +9,16 @@
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35)
 }
 
+.order-complete{
+    width: fit-content;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35)
+}
+
 .order-text{
 text-align: left;
 }
@@ -31,6 +41,10 @@ table, td ,th{
     padding: 3px;
 }
 
+.item-form-table{
+    margin: auto;
+}
+
 button{
     border: none; //デフォルトの枠線を削除。
     width: auto;
@@ -41,6 +55,14 @@ button{
     overflow:visible;
     cursor:pointer;
     vertical-align: middle;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    opacity: 1 !important;
 }
 
 button:hover{
@@ -62,6 +84,10 @@ button:hover{
     box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
     cursor:pointer;
 }
+
+.errorMessages {
+ 	color: red;
+ }
 
 .select-content {
     margin-top: 20px;

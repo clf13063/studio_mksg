@@ -10,4 +10,3 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Integer> {
         List<Item> findByCategoryId(int categoryId);
     }
-

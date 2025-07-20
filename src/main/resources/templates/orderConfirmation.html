@@ -11,6 +11,148 @@
     <h1>studio_mksg</h1>
     <h2>注文情報確認</h2>
 </div>
+<div class="main-contents">
+    <div class="order-form">
+    <form method="post" th:action="@{/orderRegister}" th:object="${orderForm}">
+        <table class="order-form-table">
+            <tr>
+                <th><label>お名前</label></th>
+                <td>
+                    <input type="text" th:field="*{lastName}" disabled/>
+                    <input type="text" th:field="*{firstName}" disabled/><br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>郵便番号</label></th>
+                <td><input type="text" th:field="*{postcode}" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>住所</label></th>
+                <td><input type="text" th:field="*{address}" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>電話番号</label></th>
+                <td><input type="text" th:field="*{tel}" disabled/></td>
+            </tr>
+        </table>
+        <div class="order-text">
+            お届け先情報<br>
+        </div>
+        <input type="checkbox" th:field="*{differentReceiver}" id="receiver-checkbox" disabled/>
+        お客様情報と異なる（お届け先情報がお客様情報と異なる場合、チャックを入れて入力してください）
+        <table class="order-form-table">
+            <tr>
+                <th><label>お名前（お届け先)</label></th>
+                <td>
+                    <input type="text" th:field="*{receiverLastName}" class="receiver-input" disabled/>
+                    <input type="text" th:field="*{receiverFirstName}" class="receiver-input" disabled/><br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>郵便番号（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverPostcode}" class="receiver-input" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>住所（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverAddress}" class="receiver-input" disabled/></td>
+            </tr>
+            <tr>
+                <th><label>電話番号（お届け先)</label></th>
+                <td><input type="text" th:field="*{receiverTel}" class="receiver-input" disabled/></td>
+            </tr>
+        </table>
+        <table class="order-form-table">
+            <tr>
+                <th><label>お支払方法</label></th>
+                <td>
+                    <input type="radio" th:field="*{paymentMethod}" value="1" disabled/> クレジットカード<br>
+                    カード番号
+                    <input type="text" th:field="*{creditNumber}" disabled/><br>
+                    セキュリティコード
+                    <input type="text" th:field="*{securityCode}" disabled/><br>
+                    有効期限　
+                    <select id="expiryMonth" name="expiryMonth" disabled>
+                        <option value="" selected></option>
+                        <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}"
+                                th:text="${i}" th:selected="${i == expiryMonth}"></option>
+                    </select>
+                    月
+                    <select id="expiryYear" name="expiryYear" disabled>
+                        <option value="" selected></option>
+                        <option th:each="i : ${#numbers.sequence(2025, 2035)}" th:value="${i}"
+                                th:text="${i}" th:selected="${i == expiryYear}"></option>
+                    </select>
+                    年<br>
+                    支払い方法
+                    <select th:field="*{numberOfPayment}" disabled>
+                        <option value="" selected></option>
+                        <option value="1" th:selected="${numberOfPayment == 1}">一括払い</option>
+                        <option value="2" th:selected="${numberOfPayment == 2}">2回払い</option>
+                        <option value="3" th:selected="${numberOfPayment == 3}">3回払い</option>
+                        <option value="4" th:selected="${numberOfPayment == 4}">6回払い</option>
+                        <option value="5" th:selected="${numberOfPayment == 5}">リボ払い</option>
+                    </select><br>
+                    <input type="radio" th:field="*{paymentMethod}" value="2" disabled/>代金引換<br>
+                    <input type="radio" th:field="*{paymentMethod}" value="3" disabled/>コンビニ<br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>メールアドレス</label></th>
+                <td>
+                    メールアドレス<input type="text" th:field="*{email}" disabled/><br>
+                    メールアドレス(確認用)<input type="text" th:field="*{confirmationEmail}" disabled/><br>
+                </td>
+            </tr>
+            <tr>
+                <th><label>ギフト設定</label></th>
+                <td>
+                    ギフト包装<br>
+                    <input type="radio" th:field="*{giftHope}" value="0" disabled/>希望しない<br>
+                    <input type="radio" th:field="*{giftHope}" value="1" disabled/>希望する<br>
+                    ※大型の商品はリボンのみとなります<br>
+                    <input type="checkbox" th:field="*{giftMassageFlag}" id="giftMassage-checkbox" disabled/>
+                    ギフトメッセージ（100文字以内）<br>
+                    <input type="text" th:field="*{giftMassage}" class="giftMassage-input" disabled/><br>
+                </td></tr>
+        </table>
 
+        <!-- 商品一覧表示 -->
+        商品<br>
+        <table>
+            <thead>
+            <tr>
+                <th>商品ID</th>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>数量</th>
+                <th>小計(円)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="i : ${#numbers.sequence(0, orderForm.itemIds.size() - 1)}">
+                <td th:text="${orderForm.itemIds[i]}"></td>
+                <td th:text="${orderForm.itemNames[i]}"></td>
+                <td th:text="${orderForm.prices[i]}"></td>
+                <td th:text="${orderForm.quantities[i]}"></td>
+                <td th:text="${orderForm.subtotals[i]}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+
+        <div class="button">
+            <a href="/orderInput">
+                <button type="button"><img src="/img/back.png" alt="注文情報入力画面へ戻る" class="back-button"></button>
+            </a>
+            <button type="button"><input class="confirm-button" type="submit" value="注文を確定する"/></button>
+        </div>
+    </form>
+        <form method="get" th:action="@{/orderInput}" th:object="${orderForm}">
+            <button type="submit" class="back-button">
+                <img src="/img/back.png" alt="注文情報入力画面へ戻る">
+            </button>
+        </form>
+    </div>
+</div>
 </body>
-</html>
+</html>>
