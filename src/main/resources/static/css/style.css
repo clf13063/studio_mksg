@@ -62,3 +62,64 @@ button:hover{
     box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
     cursor:pointer;
 }
+
+.select-content {
+    margin-top: 20px;
+    padding: 10px 40px;
+}
+
+.select-content select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.select-content button {
+    background-color: #111;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-left: 15px;
+    font-size: 14px;
+}
+
+.logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 15px;
+    font-size: 1.2em;
+    background-color: #111;
+    color: #fff;
+    width: 100%;
+
+}
+
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3列に分割 */
+    gap: 30px; /* 各アイテムの間隔 */
+    padding: 20px;
+    justify-items: center; /* 各カードを中央に */
+}
+
+
+.item-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 23%; /* 4列表示（100%÷4列=25%、gapを考慮） */
+    min-width: 200px;
+    box-sizing: border-box;
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.item-card img {
+    width: 150px;     /* 横幅を200pxに統一 */
+    height: 150px;    /* 高さも統一 */
+    object-fit: cover; /* トリミングして枠に収める */
+    border-radius: 10px; /* 角丸にしたい場合 */
+}

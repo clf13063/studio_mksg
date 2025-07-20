@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
+    <title>TOP</title>
+</head>
+<body>
+
+<header>
+    <div class="logo">studio MKSG</div>
+
+    <div class="select-content">
+        <form th:action="@{/top}" method="get">
+        <label for="selectCategory">カテゴリ:</label>
+        <select name="selectCategory" id="selectCategory">
+            <option value="" th:selected="${selectCategory} == null or selectCategory == '' ">すべて</option>
+            <option value="1" th:selected="${selectCategory} == '1'">植物</option>
+            <option value="2" th:selected="${selectCategory} == '2'">家具</option>
+            <option value="3" th:selected="${selectCategory} == '3'">タオル</option>
+        </select>
+        <button type="submit">検索</button>
+    <!-- 商品一覧表示 -->
+    <div class="item-list">
+    <div th:each="items : ${allItem}" class="item-card">
+        <div>
+            <img th:src="${items.image}" alt="商品画像">
+            <p>商品名：<span th:text="${items.name}"></span></p>
+            <p>価格: <span th:text="${items.price}"></span>円</p>
+        </div>
+        <hr>
+    </div>
+    </div>
+    </form>
+    </div>
+</header>
+
+</body>
+</html>

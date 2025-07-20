@@ -27,6 +27,9 @@ public class Item {
     @Column
     private int stock;
 
+    @Column(name = "category_id")
+    private int categoryId;
+
     @Column(name = "created_date", insertable = false, updatable = false)
     private Date createdDate;
 
