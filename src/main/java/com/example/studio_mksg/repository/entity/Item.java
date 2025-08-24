@@ -29,7 +29,7 @@ public class Item {
     private int stock;
 
     @Column
-    private int category_id;
+    private int categoryId;
 
     @Column(name = "created_date", insertable = false, updatable = false)
     private Date createdDate;

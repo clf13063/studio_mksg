@@ -149,3 +149,7 @@ button:hover{
     object-fit: cover; /* トリミングして枠に収める */
     border-radius: 10px; /* 角丸にしたい場合 */
 }
+
+.cart-icon {
+    margin-right: 20px;
+}

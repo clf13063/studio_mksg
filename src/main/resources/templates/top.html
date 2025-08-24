@@ -11,7 +11,11 @@
 
 <header>
     <div class="logo">studio MKSG</div>
-
+    <div class="cart-icon">
+        <a href="/cart">
+            <img src="/images/cart.png" alt="カート" width="30">
+        </a>
+    </div>
     <div class="select-content">
         <form th:action="@{/top}" method="get">
         <label for="selectCategory">カテゴリ:</label>
@@ -22,6 +26,7 @@
             <option value="3" th:selected="${selectCategory} == '3'">タオル</option>
         </select>
         <button type="submit">検索</button>
+        </form>
     <!-- 商品一覧表示 -->
     <div class="item-list">
     <div th:each="items : ${allItem}" class="item-card">
@@ -29,11 +34,11 @@
             <img th:src="${items.image}" alt="商品画像">
             <p>商品名：<span th:text="${items.name}"></span></p>
             <p>価格: <span th:text="${items.price}"></span>円</p>
+            <a th:href="@{/items/{id}(id=${items.id})}">詳細を見る</a>
         </div>
         <hr>
     </div>
     </div>
-    </form>
     </div>
 </header>
 

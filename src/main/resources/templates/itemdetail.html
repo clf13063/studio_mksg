@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>商品詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<header>
+    <div class="logo">studio MKSG</div>
+</header>
+
+<main>
+    <h2>商品詳細</h2>
+
+    <div class="item-detail">
+        <img th:src="${items.image}" alt="商品画像">
+        <p>商品名: <span th:text="${items.name}"></span></p>
+        <p>価格: <span th:text="${items.price}"></span>円</p>
+        <a th:href="@{/cart/{id}(id=${items.id})}">カートに入れる</a>
+    </div>
+
+    <a href="/top">← 商品一覧に戻る</a>
+</main>
+
+</body>
+</html>

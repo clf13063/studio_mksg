@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ショッピングカート</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <div class="logo">studio MKSG</div>
+</header>
+
+<main>
+    <h2>ショッピングカート</h2>
+
+    <div th:if="${#lists.isEmpty(cart)}">
+        <p>カートに商品がありません。</p>
+    </div>
+
+    <div th:each="item : ${cart}" class="item-detail">
+        <img th:src="${item.image}" alt="商品画像" width="80">
+        <p th:text="${item.name}"></p>
+        <p>価格: <span th:text="${item.price}"></span>円</p>
+
+        <!-- 数量変更ボタン -->
+        <form th:action="@{/cart/update}" method="post" style="display:inline;">
+            <input type="hidden" name="id" th:value="${item.id}">
+            <button type="submit" name="action" value="minus">-</button>
+        </form>
+
+        <input type="text" th:value="${item.quantity}" readonly size="2">
+
+        <form th:action="@{/cart/update}" method="post" style="display:inline;">
+            <input type="hidden" name="id" th:value="${item.id}">
+            <button type="submit" name="action" value="plus">+</button>
+        </form>
+
+        <p>小計: <span th:text="${item.subTotal}"></span>円</p>
+
+        <!-- 削除ボタン -->
+        <form th:action="@{/cart/remove}" method="post" style="display:inline;">
+            <input type="hidden" name="id" th:value="${item.id}">
+            <button type="submit">削除</button>
+        </form>
+    </div>
+
+    <hr>
+    <p>合計: <span th:text="${total}"></span>円</p>
+
+    <a href="/top">← 商品一覧に戻る</a>
+</main>
+
 
 </body>
 </html>
