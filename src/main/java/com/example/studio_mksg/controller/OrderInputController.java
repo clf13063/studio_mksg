@@ -50,6 +50,7 @@ public class OrderInputController {
             List<Integer> quantities = List.of(2, 1);
 
             List<String> itemNames = new ArrayList<>();
+            List<String> itemImages = new ArrayList<>();
             List<BigDecimal> prices = new ArrayList<>();
             List<BigDecimal> subtotals = new ArrayList<>();
             BigDecimal total = BigDecimal.ZERO;
@@ -65,6 +66,7 @@ public class OrderInputController {
                     BigDecimal subTotal = price.multiply(BigDecimal.valueOf(quantity));
 
                     itemNames.add(item.getName());
+                    itemImages.add(item.getImage());
                     prices.add(price);
                     subtotals.add(subTotal);
 
@@ -76,6 +78,7 @@ public class OrderInputController {
             orderForm.setItemIds(itemIds);
             orderForm.setQuantities(quantities);
             orderForm.setItemNames(itemNames);
+            orderForm.setItemImages(itemImages);
             orderForm.setPrices(prices);
             orderForm.setSubtotals(subtotals);
             orderForm.setTotalAmount(total);
@@ -99,11 +102,9 @@ public class OrderInputController {
         List<Integer> quantities = List.of(2, 1);
 
         List<String> itemNames = new ArrayList<>();
+        List<String> itemImages = new ArrayList<>();
         List<BigDecimal> prices = new ArrayList<>();
         List<BigDecimal> subtotals = new ArrayList<>();
-
-
-        // 合計金額の計算も仮で入れておく（商品が存在すれば）
         BigDecimal total = BigDecimal.ZERO;
 
         for (int i = 0; i < itemIds.size(); i++) {
@@ -117,19 +118,23 @@ public class OrderInputController {
                 BigDecimal subTotal = price.multiply(BigDecimal.valueOf(quantity));
 
                 itemNames.add(item.getName());
+                itemImages.add(item.getImage());
                 prices.add(price);
                 subtotals.add(subTotal);
 
                 total = total.add(subTotal);
             }
         }
+
         // OrderForm にセット
         orderForm.setItemIds(itemIds);
         orderForm.setQuantities(quantities);
         orderForm.setItemNames(itemNames);
+        orderForm.setItemImages(itemImages);
         orderForm.setPrices(prices);
         orderForm.setSubtotals(subtotals);
         orderForm.setTotalAmount(total);
+
         session.setAttribute("orderForm", orderForm);
 
         if (result.hasErrors()) {

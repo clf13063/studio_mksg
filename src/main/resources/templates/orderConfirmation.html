@@ -13,6 +13,7 @@
 </div>
 <div class="main-contents">
     <div class="order-form">
+        お客様情報
     <form method="post" th:action="@{/orderRegister}" th:object="${orderForm}">
         <table class="order-form-table">
             <tr>
@@ -36,6 +37,7 @@
             </tr>
         </table>
         <div class="order-text">
+            <br>
             お届け先情報<br>
         </div>
         <input type="checkbox" th:field="*{differentReceiver}" id="receiver-checkbox" disabled/>
@@ -83,6 +85,7 @@
                                 th:text="${i}" th:selected="${i == expiryYear}"></option>
                     </select>
                     年<br>
+                    <br>
                     支払い方法
                     <select th:field="*{numberOfPayment}" disabled>
                         <option value="" selected></option>
@@ -115,10 +118,11 @@
                     <input type="text" th:field="*{giftMassage}" class="giftMassage-input" disabled/><br>
                 </td></tr>
         </table>
+        <br>
 
         <!-- 商品一覧表示 -->
         商品<br>
-        <table>
+        <table class="item-form-table">
             <thead>
             <tr>
                 <th>商品ID</th>
@@ -130,7 +134,7 @@
             </thead>
             <tbody>
             <tr th:each="i : ${#numbers.sequence(0, orderForm.itemIds.size() - 1)}">
-                <td th:text="${orderForm.itemIds[i]}"></td>
+                <td> <img th:src="${orderForm.itemImages[i]}" alt="商品画像" class="item-image"></td>
                 <td th:text="${orderForm.itemNames[i]}"></td>
                 <td th:text="${orderForm.prices[i]}"></td>
                 <td th:text="${orderForm.quantities[i]}"></td>
@@ -138,12 +142,11 @@
             </tr>
             </tbody>
         </table>
-        <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+        <div class = "total-amount">
+            <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+        </div>
 
         <div class="button">
-            <a href="/orderInput">
-                <button type="button"><img src="/img/back.png" alt="注文情報入力画面へ戻る" class="back-button"></button>
-            </a>
             <button type="button"><input class="confirm-button" type="submit" value="注文を確定する"/></button>
         </div>
     </form>
@@ -155,4 +158,4 @@
     </div>
 </div>
 </body>
-</html>>
+</html>

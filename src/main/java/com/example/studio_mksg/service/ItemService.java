@@ -31,8 +31,6 @@ public class ItemService {
             } catch (NumberFormatException e) {
                 results = itemRepository.findAll();
             }
-
-
             results = itemRepository.findByCategoryId(Integer.parseInt(selectCategory));
             return setItemForm(results);
         }
