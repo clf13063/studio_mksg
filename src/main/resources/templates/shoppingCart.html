@@ -23,33 +23,35 @@
         <p>価格: <span th:text="${item.price}"></span>円</p>
 
         <!-- 数量変更ボタン -->
-        <form th:action="@{/cart/update}" method="post" style="display:inline;">
-            <input type="hidden" name="id" th:value="${item.id}">
-            <button type="submit" name="action" value="minus">-</button>
-        </form>
+        <div class="quantity-control">
+            <form th:action="@{/cart/update}" method="post">
+                <input type="hidden" name="id" th:value="${item.id}">
+                <button type="submit" name="action" value="minus" class="button-updown">-</button>
+            </form>
 
-        <input type="text" th:value="${item.quantity}" readonly size="2">
+            <input type="text" th:value="${item.quantity}" readonly size="2" class="quantity-box">
 
-        <form th:action="@{/cart/update}" method="post" style="display:inline;">
-            <input type="hidden" name="id" th:value="${item.id}">
-            <button type="submit" name="action" value="plus">+</button>
-        </form>
+            <form th:action="@{/cart/update}" method="post">
+                <input type="hidden" name="id" th:value="${item.id}">
+                <button type="submit" name="action" value="plus" class="button-updown">+</button>
+            </form>
+        </div>
+            <p>小計: <span th:text="${item.subTotal}"></span>円</p>
 
-        <p>小計: <span th:text="${item.subTotal}"></span>円</p>
-
-        <!-- 削除ボタン -->
-        <form th:action="@{/cart/remove}" method="post" style="display:inline;">
-            <input type="hidden" name="id" th:value="${item.id}">
-            <button type="submit">削除</button>
-        </form>
+            <!-- 削除ボタン -->
+            <form th:action="@{/cart/remove}" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${item.id}">
+                <button type="submit">削除</button>
+            </form>
     </div>
 
     <hr>
     <p>合計: <span th:text="${total}"></span>円</p>
 
-    <a href="/top">← 商品一覧に戻る</a>
+    <p><a href="/orderInput">購入画面へ</a></p>
+
+
+    <p><a href="/top">← 商品一覧に戻る</a></p>
 </main>
-
-
 </body>
 </html>

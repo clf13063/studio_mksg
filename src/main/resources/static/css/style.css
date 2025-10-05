@@ -68,7 +68,6 @@ text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-/* 行の間に余白を持たせ、カード風に */
 .item-form-table tbody tr {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -137,23 +136,23 @@ button:hover{
  }
 
 .select-content {
-    margin-top: 20px;
-    padding: 10px 40px;
+    flex-grow: 1;
+    text-align: center;
 }
 
-.select-content select {
-    padding: 8px;
+.select-content select,
+    /*padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-}
+}*/
 
 .select-content button {
-    background-color: #111;
+    /*background-color: #111;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
-    margin-left: 15px;
+    margin-left: 15px;*/
     font-size: 14px;
 }
 
@@ -168,16 +167,6 @@ button:hover{
     width: 100%;
 
 }
-
-.item-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3列に分割 */
-    gap: 30px; /* 各アイテムの間隔 */
-    padding: 20px;
-    justify-items: center; /* 各カードを中央に */
-}
-
-
 .item-card {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -197,6 +186,94 @@ button:hover{
     border-radius: 10px; /* 角丸にしたい場合 */
 }
 
-.cart-icon {
-    margin-right: 20px;
+.cart-icon img {
+    width: 28px;
+    height: auto;
+}
+
+.item-list {
+  width: 100%;
+  margin:20px;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.logo a {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.logo a:hover {
+    opacity: 0.7;
+}
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    color: #fff;
+    padding: 10px 20px;
+}
+/* カート全体の商品カード */
+.item-detail {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 23%;
+  min-width: 200px;
+  box-sizing: border-box;
+  padding: 15px;
+  transition: box-shadow 0.3s ease;
+  text-align: left; /* ← 左寄せに変更 */
+}
+
+/* 商品画像 */
+.item-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* 数量ボタン＋テキストを横並び */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* ← 左寄せ */
+  gap: 10px; /* ボタン間の余白 */
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* プラス・マイナスボタン */
+.button-updown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* ← 少し小さくして文字と高さを合わせる */
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #bbd2e2;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.button-updown:hover {
+  border: 1px solid #bbd2e2;
+  background-color: #fff;
+}
+
+/* 数量ボックス */
+.quantity-box {
+  width: 40px; /* ← ボタンと同じサイズ */
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }

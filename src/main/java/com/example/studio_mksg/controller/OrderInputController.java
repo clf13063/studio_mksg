@@ -1,19 +1,18 @@
 package com.example.studio_mksg.controller;
 
+import com.example.studio_mksg.controller.form.CartItem;
 import com.example.studio_mksg.controller.form.OrderForm;
 import com.example.studio_mksg.repository.ItemRepository;
 import com.example.studio_mksg.repository.entity.Item;
 import com.example.studio_mksg.validator.OrderFormValidator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,96 +36,42 @@ public class OrderInputController {
     }
     //購入情報入力画面表示
     @GetMapping("/orderInput")
-        public ModelAndView showOrderInputForm(){
+        public ModelAndView showOrderInputForm(HttpServletRequest req){
         ModelAndView mav = new ModelAndView();
-        OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
 
-        if (orderForm == null) {
-            orderForm = new OrderForm();
-            // ★ 仮の商品情報をセッションに追加する（例：itemId=1を2個、itemId=3を1個）
-            // ※画面からの選択ができるようになるまでは仮データを使う
-            // 仮の商品情報（itemId=1を2個、itemId=3を1個）
-            List<Integer> itemIds = List.of(1, 3);
-            List<Integer> quantities = List.of(2, 1);
+        // セッションからカート情報を取得
+        HttpSession session = req.getSession();
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
-            List<String> itemNames = new ArrayList<>();
-            List<String> itemImages = new ArrayList<>();
-            List<BigDecimal> prices = new ArrayList<>();
-            List<BigDecimal> subtotals = new ArrayList<>();
-            BigDecimal total = BigDecimal.ZERO;
-
-            for (int i = 0; i < itemIds.size(); i++) {
-                int itemId = itemIds.get(i);
-                int quantity = quantities.get(i);
-                Optional<Item> itemOpt = itemRepository.findById(itemId);
-
-                if (itemOpt.isPresent()) {
-                    Item item = itemOpt.get();
-                    BigDecimal price = item.getPrice();
-                    BigDecimal subTotal = price.multiply(BigDecimal.valueOf(quantity));
-
-                    itemNames.add(item.getName());
-                    itemImages.add(item.getImage());
-                    prices.add(price);
-                    subtotals.add(subTotal);
-
-                    total = total.add(subTotal);
-                }
-            }
-
-            // OrderForm にセット
-            orderForm.setItemIds(itemIds);
-            orderForm.setQuantities(quantities);
-            orderForm.setItemNames(itemNames);
-            orderForm.setItemImages(itemImages);
-            orderForm.setPrices(prices);
-            orderForm.setSubtotals(subtotals);
-            orderForm.setTotalAmount(total);
-
-            session.setAttribute("orderForm", orderForm);
+        if (cart == null || cart.isEmpty()) {
+            // カートが空の場合はエラー表示してカート画面へ戻す
+            mav.setViewName("redirect:/cart");
+            mav.addObject("errorMessage", "カートが空です。");
+            return mav;
         }
 
-        mav.addObject("orderForm", orderForm);
-        mav.setViewName("orderInput");
-        return mav;
-    }
-
-    @PostMapping("/orderInputCheck")
-        public ModelAndView showOrderInputCheck(@Validated @ModelAttribute("orderForm") OrderForm orderForm, BindingResult
-            result, RedirectAttributes redirectAttributes){
-
-        // ★ 仮の商品情報をセッションに追加する（例：itemId=1を2個、itemId=3を1個）
-        // ※画面からの選択ができるようになるまでは仮データを使う
-        // 仮の商品情報（itemId=1を2個、itemId=3を1個）
-        List<Integer> itemIds = List.of(1, 3);
-        List<Integer> quantities = List.of(2, 1);
-
+        // カート情報から注文フォームを作成
+        OrderForm orderForm = new OrderForm();
+        List<Integer> itemIds = new ArrayList<>();
+        List<Integer> quantities = new ArrayList<>();
         List<String> itemNames = new ArrayList<>();
         List<String> itemImages = new ArrayList<>();
         List<BigDecimal> prices = new ArrayList<>();
         List<BigDecimal> subtotals = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 
-        for (int i = 0; i < itemIds.size(); i++) {
-            int itemId = itemIds.get(i);
-            int quantity = quantities.get(i);
-            Optional<Item> itemOpt = itemRepository.findById(itemId);
-
-            if (itemOpt.isPresent()) {
-                Item item = itemOpt.get();
-                BigDecimal price = item.getPrice();
-                BigDecimal subTotal = price.multiply(BigDecimal.valueOf(quantity));
-
-                itemNames.add(item.getName());
-                itemImages.add(item.getImage());
-                prices.add(price);
-                subtotals.add(subTotal);
-
-                total = total.add(subTotal);
-            }
+        for (CartItem ci : cart) {
+            itemIds.add(ci.getId());
+            quantities.add(ci.getQuantity());
+            itemNames.add(ci.getName());
+            itemImages.add(ci.getImage());
+            BigDecimal price = BigDecimal.valueOf(ci.getPrice());
+            BigDecimal sub = price.multiply(BigDecimal.valueOf(ci.getQuantity()));
+            prices.add(price);
+            subtotals.add(sub);
+            total = total.add(sub);
         }
 
-        // OrderForm にセット
         orderForm.setItemIds(itemIds);
         orderForm.setQuantities(quantities);
         orderForm.setItemNames(itemNames);
@@ -135,7 +80,19 @@ public class OrderInputController {
         orderForm.setSubtotals(subtotals);
         orderForm.setTotalAmount(total);
 
+        // セッションに保存
         session.setAttribute("orderForm", orderForm);
+
+        // 画面に渡す
+        mav.addObject("orderForm", orderForm);
+        mav.addObject("cart", cart);
+        mav.addObject("total", total);
+        return mav;
+    }
+
+    @PostMapping("/orderInputCheck")
+        public ModelAndView showOrderInputCheck(@Validated @ModelAttribute("orderForm") OrderForm orderForm, BindingResult
+            result, RedirectAttributes redirectAttributes){
 
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderForm", result);
@@ -143,6 +100,7 @@ public class OrderInputController {
             // 購入情報入力画面へリダイレクト
             return new ModelAndView("redirect:/orderInput");
         }
+        session.setAttribute("orderForm", orderForm);
         return new ModelAndView("redirect:/orderConfirmation");
         }
     }
