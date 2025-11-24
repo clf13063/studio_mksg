@@ -32,12 +32,4 @@ public class OrderForm {
     private String giftHope;
     private Boolean giftMassageFlag;
     private String giftMassage;
-
-    private List<Integer> itemIds = new ArrayList<>();
-    private List<String> itemImages = new ArrayList<>();
-    private List<String> itemNames = new ArrayList<>();
-    private List<BigDecimal> prices = new ArrayList<>();
-    private List<Integer> quantities;
-    private List<BigDecimal> subtotals = new ArrayList<>();
-    private BigDecimal totalAmount;
 }

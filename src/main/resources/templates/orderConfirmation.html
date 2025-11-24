@@ -133,17 +133,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="i : ${#numbers.sequence(0, orderForm.itemIds.size() - 1)}">
-                <td> <img th:src="${orderForm.itemImages[i]}" alt="商品画像" class="item-image"></td>
-                <td th:text="${orderForm.itemNames[i]}"></td>
-                <td th:text="${orderForm.prices[i]}"></td>
-                <td th:text="${orderForm.quantities[i]}"></td>
-                <td th:text="${orderForm.subtotals[i]}"></td>
+            <tr th:each="item : ${cart}">
+                <td><img th:src="${item.image}" alt="商品画像" class="item-image"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price * item.quantity}"></td>
             </tr>
             </tbody>
         </table>
         <div class = "total-amount">
-            <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>
+            <p><strong>合計金額：</strong> <span th:text="${total} + ' 円'"></span></p>
         </div>
 
         <div class="button">

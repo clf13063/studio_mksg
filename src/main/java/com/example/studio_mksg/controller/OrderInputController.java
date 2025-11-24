@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,9 +37,14 @@ public class OrderInputController {
     }
     //購入情報入力画面表示
     @GetMapping("/orderInput")
-        public ModelAndView showOrderInputForm(HttpServletRequest req){
-        ModelAndView mav = new ModelAndView();
+    public ModelAndView showOrderInputForm(@ModelAttribute("orderForm") OrderForm orderForm,
+                                           BindingResult result,
+                                           HttpServletRequest req) {
+        ModelAndView mav = new ModelAndView("orderInput");
 
+        if(result.hasErrors()){
+            System.out.println("エラーあり");
+        }
         // セッションからカート情報を取得
         HttpSession session = req.getSession();
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
@@ -50,8 +56,28 @@ public class OrderInputController {
             return mav;
         }
 
-        // カート情報から注文フォームを作成
-        OrderForm orderForm = new OrderForm();
+        // ★毎回、カートから orderForm の item 部分を再作成する
+        setupOrderFormFromCart(orderForm, cart);
+
+        //合計金額計算
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItem ci : cart) {
+            BigDecimal price = BigDecimal.valueOf(ci.getPrice());
+            BigDecimal subtotal = price.multiply(BigDecimal.valueOf(ci.getQuantity()));
+            total = total.add(subtotal);
+        }
+        // セッションに保存
+        session.setAttribute("orderForm", orderForm);
+
+        // 画面に渡す
+        mav.addObject("orderForm", orderForm);
+        mav.addObject("cart", cart);
+        mav.addObject("total", total);
+        mav.setViewName("orderInput");
+        return mav;
+    }
+
+    private void setupOrderFormFromCart(OrderForm orderForm, List<CartItem> cart) {
         List<Integer> itemIds = new ArrayList<>();
         List<Integer> quantities = new ArrayList<>();
         List<String> itemNames = new ArrayList<>();
@@ -71,34 +97,32 @@ public class OrderInputController {
             subtotals.add(sub);
             total = total.add(sub);
         }
-
-        orderForm.setItemIds(itemIds);
-        orderForm.setQuantities(quantities);
-        orderForm.setItemNames(itemNames);
-        orderForm.setItemImages(itemImages);
-        orderForm.setPrices(prices);
-        orderForm.setSubtotals(subtotals);
-        orderForm.setTotalAmount(total);
-
-        // セッションに保存
-        session.setAttribute("orderForm", orderForm);
-
-        // 画面に渡す
-        mav.addObject("orderForm", orderForm);
-        mav.addObject("cart", cart);
-        mav.addObject("total", total);
-        return mav;
     }
 
     @PostMapping("/orderInputCheck")
         public ModelAndView showOrderInputCheck(@Validated @ModelAttribute("orderForm") OrderForm orderForm, BindingResult
-            result, RedirectAttributes redirectAttributes){
+            result, RedirectAttributes redirectAttributes, HttpServletRequest req, Model model){
+        HttpSession session = req.getSession();
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderForm", result);
-            redirectAttributes.addFlashAttribute("orderForm", orderForm);
-            // 購入情報入力画面へリダイレクト
-            return new ModelAndView("redirect:/orderInput");
+            // カート情報がセッションにある場合、再設定
+            BigDecimal total = BigDecimal.ZERO;
+            if (cart != null) {
+                for (CartItem ci : cart) {
+                    BigDecimal price = BigDecimal.valueOf(ci.getPrice());
+                    BigDecimal sub = price.multiply(BigDecimal.valueOf(ci.getQuantity()));
+                    total = total.add(sub);
+                }
+            }
+
+            // ModelAndViewを使ってフォワード
+            ModelAndView mav = new ModelAndView("orderInput");
+            mav.addObject("orderForm", orderForm);
+            mav.addObject("cart", cart);
+            mav.addObject("total", total);
+
+            return mav; // ← フォワード
         }
         session.setAttribute("orderForm", orderForm);
         return new ModelAndView("redirect:/orderConfirmation");

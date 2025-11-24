@@ -1,5 +1,6 @@
 package com.example.studio_mksg.service;
 
+import com.example.studio_mksg.controller.form.CartItem;
 import com.example.studio_mksg.controller.form.OrderForm;
 import com.example.studio_mksg.repository.ItemRepository;
 import com.example.studio_mksg.repository.OrderDetailRepository;
@@ -25,20 +26,23 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
 
     @Transactional
-    public Order saveOrder(OrderForm orderForm) {
-        // 1. 在庫チェック
-        for (int i = 0; i < orderForm.getItemIds().size(); i++) {
-            int itemId = orderForm.getItemIds().get(i);
-            int quantity = orderForm.getQuantities().get(i);
+    public Order saveOrder(OrderForm orderForm, List<CartItem> cart) {
 
-            Item item = itemRepository.findById(itemId)
-                    .orElseThrow(() -> new IllegalArgumentException("商品が見つかりません: ID=" + itemId));
-            if (item.getStock() < quantity) {
+        if (cart == null || cart.isEmpty()) {
+            throw new IllegalStateException("カートが空です");
+        }
+
+        // 1. 在庫チェック（cartから確認）
+        for (CartItem ci : cart) {
+            Item item = itemRepository.findById(ci.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("商品が見つかりません: ID=" + ci.getId()));
+
+            if (item.getStock() < ci.getQuantity()) {
                 throw new IllegalStateException("在庫不足: " + item.getName());
             }
         }
 
-        // 2. 注文情報の作成
+        // 2. 注文情報作成（顧客情報のみ）
         Order order = new Order();
         order.setName(orderForm.getLastName() + " " + orderForm.getFirstName());
         order.setPostcode(orderForm.getPostcode());
@@ -58,35 +62,31 @@ public class OrderService {
             order.setReceiverTel(order.getTel());
         }
 
-        // その他
         order.setEmail(orderForm.getEmail());
         order.setPaymentMethod(orderForm.getPaymentMethod());
         order.setGiftHope(orderForm.getGiftHope());
         order.setGiftMassage(Boolean.TRUE.equals(orderForm.getGiftMassageFlag()) ? orderForm.getGiftMassage() : null);
 
-
-        // 3. 注文詳細の作成
+        // 3. 注文詳細作成（cart から作成）
         List<OrderDetail> orderDetails = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 
-        for (int i = 0; i < orderForm.getItemIds().size(); i++) {
-            int itemId = orderForm.getItemIds().get(i);
-            int quantity = orderForm.getQuantities().get(i);
+        for (CartItem ci : cart) {
 
-            Item item = itemRepository.findById(itemId).get();
+            Item item = itemRepository.findById(ci.getId()).get();
 
-            // 在庫更新
-            item.setStock(item.getStock() - quantity);
+            // 在庫減算
+            item.setStock(item.getStock() - ci.getQuantity());
             itemRepository.save(item);
 
             // 小計
-            BigDecimal subTotal = item.getPrice().multiply(BigDecimal.valueOf(quantity));
+            BigDecimal subTotal = item.getPrice().multiply(BigDecimal.valueOf(ci.getQuantity()));
 
-            // 注文詳細作成
+            // 注文詳細
             OrderDetail detail = new OrderDetail();
             detail.setOrder(order);
             detail.setItem(item);
-            detail.setQuantity(quantity);
+            detail.setQuantity(ci.getQuantity());
             detail.setSubTotal(subTotal);
 
             orderDetails.add(detail);

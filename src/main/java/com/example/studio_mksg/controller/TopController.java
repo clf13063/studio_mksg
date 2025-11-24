@@ -103,6 +103,7 @@ public class TopController {
                 newItem.setId(item.getId());
                 newItem.setName(item.getName());
                 newItem.setPrice(item.getPrice());
+                newItem.setImage(item.getImage());
                 newItem.setQuantity(1);
                 newItem.setImage(item.getImage());
                 cart.add(newItem);

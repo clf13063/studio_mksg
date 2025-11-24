@@ -1,9 +1,11 @@
 package com.example.studio_mksg.controller;
 
+import com.example.studio_mksg.controller.form.CartItem;
 import com.example.studio_mksg.controller.form.OrderForm;
 import com.example.studio_mksg.repository.ItemRepository;
 import com.example.studio_mksg.repository.entity.Item;
 import com.example.studio_mksg.service.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,52 +29,52 @@ public class OrderConfirmationController {
 
     //購入情報確認画面表示
     @GetMapping("/orderConfirmation")
-    public ModelAndView showOrderConfirmationForm(){
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("/orderConfirmation");
-        OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+    public ModelAndView showOrderConfirmation(HttpServletRequest req) {
+        HttpSession session = req.getSession();
 
-        if (orderForm.getItemNames() == null || orderForm.getItemNames().isEmpty()) {
-            List<String> itemNames = new ArrayList<>();
-            List<BigDecimal> prices = new ArrayList<>();
-            List<BigDecimal> subtotals = new ArrayList<>();
-            BigDecimal total = BigDecimal.ZERO;
-
-            for (int i = 0; i < orderForm.getItemIds().size(); i++) {
-                int itemId = orderForm.getItemIds().get(i);
-                int quantity = orderForm.getQuantities().get(i);
-                Optional<Item> itemOpt = itemRepository.findById(itemId);
-
-                if (itemOpt.isPresent()) {
-                    Item item = itemOpt.get();
-                    BigDecimal price = item.getPrice();
-                    BigDecimal subTotal = price.multiply(BigDecimal.valueOf(quantity));
-
-                    itemNames.add(item.getName());
-                    prices.add(price);
-                    subtotals.add(subTotal);
-                    total = total.add(subTotal);
-                }
-            }
-
-            orderForm.setItemNames(itemNames);
-            orderForm.setPrices(prices);
-            orderForm.setSubtotals(subtotals);
-            orderForm.setTotalAmount(total);
-
-            // 更新された情報で再保存
-            session.setAttribute("orderForm", orderForm);
+        // カート情報
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart == null || cart.isEmpty()) {
+            return new ModelAndView("redirect:/cart");
         }
-        mav.addObject("orderForm", orderForm);
-        return mav;
 
+        // 顧客情報
+        OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+        if (orderForm == null) {
+            orderForm = new OrderForm();
+        }
+
+        // 合計金額を計算
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItem ci : cart) {
+            BigDecimal price = BigDecimal.valueOf(ci.getPrice());
+            total = total.add(price.multiply(BigDecimal.valueOf(ci.getQuantity())));
+        }
+
+        ModelAndView mav = new ModelAndView("orderConfirmation");
+        mav.addObject("cart", cart);
+        mav.addObject("total", total);
+        mav.addObject("orderForm", orderForm);
+
+        return mav;
     }
 
     @PostMapping("/orderRegister")
-    public ModelAndView orderRegister(){
+    public ModelAndView orderRegister(HttpServletRequest req){
+        HttpSession session = req.getSession();
+
         OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart == null || cart.isEmpty()) {
+            // カートが空の場合はエラー表示してカート画面へ戻す
+            ModelAndView mav = new ModelAndView("redirect:/cart");
+            mav.addObject("errorMessage", "カートが空です。");
+            return mav;
+        }
     // 注文情報をテーブルに格納
-        orderService.saveOrder(orderForm);
+        orderService.saveOrder(orderForm, cart);
+    // 注文完了後はカート削除
+        session.removeAttribute("cart");
     // 注文完了画面へリダイレクト
         return new ModelAndView("redirect:/orderComplete");
     }

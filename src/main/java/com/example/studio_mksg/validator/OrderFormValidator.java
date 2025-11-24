@@ -2,10 +2,8 @@ package com.example.studio_mksg.validator;
 
 import com.example.studio_mksg.controller.form.OrderForm;
 import io.micrometer.common.util.StringUtils;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
