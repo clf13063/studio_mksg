@@ -28,8 +28,12 @@ public class Item {
     @Column
     private int stock;
 
-    @Column
-    private int categoryId;
+    @Column(name = "category_id", insertable = false, updatable = false)
+    private Integer  categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)  // 外部キー
+    private Category category;
 
     @Column(name = "created_date", insertable = false, updatable = false)
     private Date createdDate;
