@@ -32,7 +32,8 @@ public class Item {
     private Integer  categoryId;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)  // 外部キー
+//    @JoinColumn(name = "category_id", insertable = false, updatable = false)  // 外部キー
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(name = "created_date", insertable = false, updatable = false)

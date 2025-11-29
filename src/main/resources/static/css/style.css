@@ -277,3 +277,147 @@ button:hover{
   border-radius: 10px;
   box-sizing: border-box;
 }
+
+/*salesManagementTop*/
+/* 商品管理画面コンテンツ全体 */
+.sales-management-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* テーブル全体 */
+.sales-item-content-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ヘッダー */
+.sales-item-content-table th {
+    background-color: #f0f2f5;
+    text-align: center;
+    padding: 12px 10px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+}
+
+/* セル共通 */
+.sales-item-content-table td {
+    padding: 12px 10px;
+    font-size: 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 左揃え */
+.left-text {
+    text-align: left;
+}
+
+/* 中央揃え */
+.center-text {
+    text-align: center;
+}
+
+/* 行ホバー */
+.sales-item-content-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .sales-item-content-table td,
+    .sales-item-content-table th {
+        padding: 10px 5px;
+        font-size: 13px;
+    }
+
+    .item-image {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+.new-item-button{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 90%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+}
+
+/*itemRegister*/
+.item-register-form {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* テーブル全体 */
+.item-register-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* ラベルセル */
+.item-register-table th {
+    width: 120px;
+    text-align: left;
+    background-color: #f5f5f5;
+    padding: 12px 15px;
+    font-weight: 500;
+    border-radius: 6px 0 0 6px;
+}
+
+/* 入力セル */
+.item-register-table td {
+    padding: 10px 15px;
+}
+
+/* 入力欄 */
+.item-register-table input[type="text"],
+.item-register-table input[type="number"],
+.item-register-table select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box; /* これではみ出さない */
+    background-color: #fafafa;
+    transition: 0.2s all;
+}
+
+.item-register-table input[type="text"]:focus,
+.item-register-table input[type="number"]:focus,
+.item-register-table select:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    outline: none;
+    background-color: #fff;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 550px) {
+    .item-register-form {
+        padding: 20px;
+    }
+
+    .item-register-table th,
+    .item-register-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .item-register-table th {
+        margin-bottom: 6px;
+    }

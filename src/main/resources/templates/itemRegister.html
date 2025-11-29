@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script th:src="@{/js/style.js}" rel="script"></script>
+    <title>商品情報登録</title>
+</head>
+<body>
+<div class="header-contents">
+    <h1>studio_mksg</h1>
+    <h2>商品情報登録</h2>
+</div>
+
+<div class="main-contents">
+    <div class="item-register-form">
+<form th:action="@{/itemRegister}" th:object="${itemRegisterForm}" method="post">
+
+    <table class="item-register-table">
+        <!-- 商品名 -->
+        <tr>
+            <th>商品名</th>
+            <td>
+                <input type="text" th:field="*{name}">
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="errorMessages"></div>
+            </td>
+        </tr>
+
+        <!-- 価格 -->
+        <tr>
+            <th>価格</th>
+            <td>
+                <input type="number" th:field="*{price}">
+                <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="errorMessages"></div>
+            </td>
+        </tr>
+
+        <!-- 在庫 -->
+        <tr>
+            <th>在庫数</th>
+            <td>
+                <input type="number" th:field="*{stock}">
+                <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="errorMessages"></div>
+            </td>
+        </tr>
+
+        <!-- 画像URL -->
+        <tr>
+            <th>画像URL</th>
+            <td>
+                <input type="text" th:field="*{image}">
+            </td>
+        </tr>
+
+        <!-- カテゴリー -->
+        <tr>
+            <th>カテゴリ</th>
+            <td>
+                <select th:field="*{categoryId}">
+                    <option value="">--選択してください--</option>
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.category}">
+                    </option>
+                </select>
+                <div th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" class="errorMessages"></div>
+            </td>
+        </tr>
+    </table>
+    <!-- 送信ボタン -->
+    <div class="button">
+        <button type="button">
+            <input class="confirm-button" type="submit" value="登録する"/>
+        </button>
+    </div>
+</form>
+    </div>
+</div>
+<p><a href="/salesManagementTop">← 販売管理TOPに戻る</a></p>
+</body>
+</html>
