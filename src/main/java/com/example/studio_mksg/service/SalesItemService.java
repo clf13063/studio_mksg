@@ -25,17 +25,16 @@ public class SalesItemService {
         List<Item> results;
         //カテゴリ指定されていない場合は全件取得
         if (selectCategory == null || selectCategory.isEmpty()) {
-            results = itemRepository.findAll();
+            results = itemRepository.findAllByOrderById();
             return setSalesItemForm(results);
             //カテゴリが指定されている場合
         } else {
             try {
                 Integer categoryId = Integer.parseInt(selectCategory);
-                results = itemRepository.findByCategoryId(categoryId);
+                results = itemRepository.findByCategoryIdOrderById(categoryId);
             } catch (NumberFormatException e) {
-                results = itemRepository.findAll();
+                results = itemRepository.findAllByOrderById();
             }
-            results = itemRepository.findByCategoryId(Integer.parseInt(selectCategory));
             return setSalesItemForm(results);
         }
     }
