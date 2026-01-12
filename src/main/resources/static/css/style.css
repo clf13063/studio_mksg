@@ -46,7 +46,19 @@ text-align: left;
 }
 
 
-//商品一覧
+/*商品一覧*/
+.sold-out-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #e53935;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
 .item-form-table {
     width: fit-content;
     margin: 20px auto;
@@ -168,6 +180,7 @@ button:hover{
 
 }
 .item-card {
+    position: relative;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -219,6 +232,7 @@ button:hover{
 }
 /* カート全体の商品カード */
 .item-detail {
+  position: relative;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;

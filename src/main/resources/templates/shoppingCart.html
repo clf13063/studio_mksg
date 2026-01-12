@@ -13,8 +13,12 @@
 <main>
     <h2>ショッピングカート</h2>
 
-    <div th:if="${#lists.isEmpty(cart)}">
+    <div th:if="${#lists.isEmpty(cart)}" class="errorMessages">
         <p>カートに商品がありません。</p>
+    </div>
+
+    <div th:if="${errorMessage}" class="errorMessages">
+        <p th:text="${errorMessage}"></p>
     </div>
 
     <div th:each="item : ${cart}" class="item-detail">

@@ -11,6 +11,6 @@ public class ItemForm {
     private String name;
     private String price;
     private String image;
-    private String stock;
-    private String category_id;
+    private Integer stock;
+    private String categoryId;
 }

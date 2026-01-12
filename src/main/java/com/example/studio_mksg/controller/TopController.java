@@ -57,9 +57,9 @@ public class TopController {
             itemForm.setId(String.valueOf(item.getId()));
             itemForm.setName(item.getName());
             itemForm.setPrice(String.valueOf(item.getPrice()));
-            itemForm.setStock(String.valueOf(item.getStock()));
+            itemForm.setStock(item.getStock());
             itemForm.setImage(item.getImage());
-            itemForm.setCategory_id(String.valueOf(item.getCategoryId()));
+            itemForm.setCategoryId(String.valueOf(item.getCategoryId()));
 
             mav.addObject("items", itemForm);
             mav.setViewName("itemdetail");
@@ -215,7 +215,6 @@ public class TopController {
         ModelAndView mav = new ModelAndView("shoppingCart");
         mav.addObject("cart", cart);
         mav.addObject("total", total);
-
         return mav;
     }
 }

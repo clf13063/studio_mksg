@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class OrderConfirmationController {
     }
 
     @PostMapping("/orderRegister")
-    public ModelAndView orderRegister(HttpServletRequest req){
+    public ModelAndView orderRegister(HttpServletRequest req, RedirectAttributes redirectAttributes){
         HttpSession session = req.getSession();
 
         OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
@@ -72,7 +73,19 @@ public class OrderConfirmationController {
             return mav;
         }
     // 注文情報をテーブルに格納
-        orderService.saveOrder(orderForm, cart);
+        try {
+            orderService.saveOrder(orderForm, cart);
+        } catch (IllegalStateException e) {
+            // 在庫不足だけをユーザー向けに表示
+            if (e.getMessage().contains("在庫")) {
+                // 在庫不足の場合はエラー表示してカート画面へ戻す
+                ModelAndView mav = new ModelAndView("redirect:/cart");
+                redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+                return mav;
+            }
+            // それ以外は想定外エラー
+            throw e;
+        }
     // 注文完了後はカート削除
         session.removeAttribute("cart");
     // 注文完了画面へリダイレクト

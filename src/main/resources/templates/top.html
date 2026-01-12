@@ -37,6 +37,9 @@
     <div class="item-list">
     <div th:each="items : ${allItem}" class="item-card">
         <div>
+            <p><span class="sold-out-badge" th:if="${items.stock == 0}">
+      　　　　SOLD OUT
+    　　　　　</span></p>
             <img th:src="${items.image}" alt="商品画像">
             <p>商品名：<span th:text="${items.name}"></span></p>
             <p>価格: <span th:text="${items.price}"></span>円</p>

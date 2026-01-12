@@ -44,8 +44,8 @@ public class ItemService {
             itemForm.setName(result.getName());
             itemForm.setPrice(String.valueOf(result.getPrice()));
             itemForm.setImage(result.getImage());
-            itemForm.setStock(String.valueOf(result.getStock()));
-            itemForm.setCategory_id(String.valueOf(result.getCategoryId()));
+            itemForm.setStock(result.getStock());
+            itemForm.setCategoryId(String.valueOf(result.getCategoryId()));
             items.add(itemForm);
         }
         return items;
@@ -58,9 +58,9 @@ public class ItemService {
             itemForm.setId(String.valueOf(item.getId()));
             itemForm.setName(item.getName());
             itemForm.setPrice(String.valueOf(item.getPrice()));
-            itemForm.setStock(String.valueOf(item.getStock()));
+            itemForm.setStock(item.getStock());
             itemForm.setImage(item.getImage());
-            itemForm.setCategory_id(String.valueOf(item.getCategoryId()));
+            itemForm.setCategoryId(String.valueOf(item.getCategoryId()));
             return itemForm;
         } else {
             return null;

@@ -1,9 +1,10 @@
 package com.example.studio_mksg.controller.form;
 
-import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ItemRegisterForm {
 
     private String name;
