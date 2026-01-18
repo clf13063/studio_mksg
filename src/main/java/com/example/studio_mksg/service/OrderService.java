@@ -32,6 +32,7 @@ public class OrderService {
             throw new IllegalStateException("カートが空です");
         }
 
+        boolean shortage = false;
         // 1. 在庫チェック（cartから確認）
         for (CartItem ci : cart) {
 
@@ -42,13 +43,25 @@ public class OrderService {
             int stock = item.getStock();
             int qty = ci.getQuantity();
 
-            if (stock < qty) {
-                throw new IllegalStateException(
-                        item.getName() + " の在庫が不足しています"
-                );
+            if (qty > stock) {
+                ci.setQuantity(stock);
+                shortage = true;
             }
+        }
+
+        if (shortage) {
+            throw new IllegalStateException(
+                    "在庫不足の商品があったため、数量を調整しました。"
+            );
+        }
             // 在庫を減らす
-            item.setStock(stock - qty);
+        for (CartItem ci : cart) {
+            Item item = itemRepository.findById(ci.getId())
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("商品が見つかりません: ID=" + ci.getId()));
+
+            item.setStock(item.getStock() - ci.getQuantity());
+            itemRepository.save(item);
         }
         // 2. 注文情報作成（顧客情報のみ）
         Order order = new Order();

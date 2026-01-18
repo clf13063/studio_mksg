@@ -20,6 +20,9 @@
     <div th:if="${errorMessage}" class="errorMessages">
         <p th:text="${errorMessage}"></p>
     </div>
+    <div th:if="${infoMessage}" class="infoMessages">
+        <p th:text="${infoMessage}"></p>
+    </div>
 
     <div th:each="item : ${cart}" class="item-detail">
         <img th:src="${item.image}" alt="商品画像" width="80">
@@ -37,7 +40,8 @@
 
             <form th:action="@{/cart/update}" method="post">
                 <input type="hidden" name="id" th:value="${item.id}">
-                <button type="submit" name="action" value="plus" class="button-updown">+</button>
+                <button type="submit" name="action" value="plus" class="button-updown"
+                        th:disabled="${(item.quantity ?: 1) >= item.stock}">+</button>
             </form>
         </div>
             <p>小計: <span th:text="${item.subTotal}"></span>円</p>

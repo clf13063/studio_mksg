@@ -147,6 +147,11 @@ button:hover{
  	color: red;
  }
 
+.infoMessages {
+   background-color: #fff8e1;   /* 薄い黄色 */
+   color: #8d6e00;
+ }
+
 .select-content {
     flex-grow: 1;
     text-align: center;
@@ -279,6 +284,15 @@ button:hover{
 .button-updown:hover {
   border: 1px solid #bbd2e2;
   background-color: #fff;
+}
+
+/* disabled 時 */
+.button-updown:disabled {
+  background-color: #e0e0e0;   /* グレー */
+  color: #9e9e9e;
+  cursor: not-allowed;
+  border: none;
+  opacity: 0.8;
 }
 
 /* 数量ボックス */

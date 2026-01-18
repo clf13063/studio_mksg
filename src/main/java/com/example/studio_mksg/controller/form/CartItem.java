@@ -13,6 +13,7 @@ public class CartItem {
     private int price;   // int 型で使う
     private int quantity;
     private String image;
+    private Integer stock;
 
     private List<Integer> itemIds = new ArrayList<>();
     private List<String> itemImages = new ArrayList<>();

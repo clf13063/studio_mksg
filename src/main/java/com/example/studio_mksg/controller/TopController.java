@@ -106,6 +106,7 @@ public class TopController {
                 newItem.setImage(item.getImage());
                 newItem.setQuantity(1);
                 newItem.setImage(item.getImage());
+                newItem.setStock(item.getStock());
                 cart.add(newItem);
             }
 
@@ -205,6 +206,21 @@ public class TopController {
         if (cart == null) {
             cart = new ArrayList<>();
         }
+        // ★ 在庫を毎回DBから再取得して同期する
+        boolean adjusted = false;
+
+        for (CartItem ci : cart) {
+            Optional<Item> opt = itemRepository.findById(ci.getId());
+            if (opt.isPresent()) {
+                Item item = opt.get();
+                ci.setStock(item.getStock());
+
+                if (ci.getQuantity() > item.getStock()) {
+                    ci.setQuantity(item.getStock());
+                    adjusted = true;
+                }
+            }
+        }
 
         // 合計金額計算
         int total = 0;
@@ -215,6 +231,9 @@ public class TopController {
         ModelAndView mav = new ModelAndView("shoppingCart");
         mav.addObject("cart", cart);
         mav.addObject("total", total);
+        if (adjusted) {
+            mav.addObject("infoMessage", "在庫状況が変わったため、数量を調整しました。");
+        }
         return mav;
     }
 }
