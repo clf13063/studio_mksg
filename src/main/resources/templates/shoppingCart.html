@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <title>ショッピングカート</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script th:src="@{/js/logo-animation.js}"></script>
 </head>
 <body>
-<header>
-    <div class="logo">studio MKSG</div>
+<header class="site-header-upper">
+      <div class="cart-icon">
+        <a href="/cart">
+          <img src="/img/cart.png" alt="カート" width="30">
+        </a>
+      </div>
+
+      <!-- 常駐用ロゴ -->
+      <div class="logo-white">
+          <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
+      </div>
 </header>
 
 <main>
+    <div class="cart-main">
     <h2>ショッピングカート</h2>
 
     <div th:if="${#lists.isEmpty(cart)}" class="errorMessages">
@@ -24,8 +35,9 @@
         <p th:text="${infoMessage}"></p>
     </div>
 
+    <div class="item-list">
     <div th:each="item : ${cart}" class="item-detail">
-        <img th:src="${item.image}" alt="商品画像" width="80">
+        <img th:src="${item.image}" alt="商品画像" class="cart-item-img">
         <p th:text="${item.name}"></p>
         <p>価格: <span th:text="${item.price}"></span>円</p>
 
@@ -52,14 +64,16 @@
                 <button type="submit">削除</button>
             </form>
     </div>
+    </div>
 
     <hr>
     <p>合計: <span th:text="${total}"></span>円</p>
 
-    <p><a href="/orderInput">購入画面へ</a></p>
+        <p><a href="/orderInput" class="btn">購入画面へ</a></p>
 
 
-    <p><a href="/top">← 商品一覧に戻る</a></p>
+    <p><a href="/top" class="button">← 商品一覧に戻る</a></p>
+    </div>
 </main>
 </body>
 </html>

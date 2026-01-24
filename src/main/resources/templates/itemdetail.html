@@ -2,20 +2,28 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>商品詳細</title>
+    <title></title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 
-<header>
-    <div class="logo">studio MKSG</div>
+<header class="site-header-upper">
+    <div class="cart-icon">
+        <a href="/cart">
+            <img src="/img/cart.png" alt="カート" width="30">
+        </a>
+    </div>
+
+    <!-- 常駐用ロゴ -->
+    <div class="logo-white">
+        <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
+    </div>
 </header>
 
-<main>
-    <h2>商品詳細</h2>
+<main class="item-main">   <h2>商品詳細</h2>
 
-    <div class="item-detail">
-        <img th:src="${items.image}" alt="商品画像">
+    <div class="item-detail-container">
+        <img th:src="${items.image}" alt="商品画像" class="item-detail-img">
         <p>商品名: <span th:text="${items.name}"></span></p>
         <p>価格: <span th:text="${items.price}"></span>円</p>
         <p><span class="sold-out-badge" th:if="${items.stock == 0}">
@@ -25,11 +33,12 @@
       　　　　※この商品は現在売り切れです
     　　 </p>
         <p><span th:if="${items.stock != 0}">
-      　　　　<a th:href="@{/cart/{id}(id=${items.id})}">カートに入れる</a>
+      　　　　<a class= "btn" th:href="@{/cart/{id}(id=${items.id})}">カートに入れる</a>
     　　 </span></p>
     </div>
 
-    <a href="/top">← 商品一覧に戻る</a>
+    <a class="button" href="/top">← 商品一覧に戻る</a>
+
 </main>
 
 </body>

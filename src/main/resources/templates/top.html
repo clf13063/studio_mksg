@@ -4,32 +4,34 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
+    <script th:src="@{/js/style.js}"></script>
+    <script th:src="@{/js/logo-animation.js}"></script>
     <title>TOP</title>
 </head>
-<body>
+<body th:classappend="${selectCategory == null} ? 'has-anim-logo' : ''">
 
-<header class="site-header">
-    <div class="logo">
-        <a>studio MKSG</a>
-    </div>
+<!-- アニメーション用ロゴ -->
+<div class="anim-logo" th:if="${selectCategory == null}">
+    <span class="anim-logo-text">studio MKSG</span>
+</div>
+<!-- 常駐用ロゴ -->
+<div class="logo-fixed">
+    <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
+</div>
 
-    <div class="select-content">
-        <form th:action="@{/top}" method="get">
-        <label for="selectCategory">カテゴリ:</label>
-        <select name="selectCategory" id="selectCategory">
-            <option value="" th:selected="${selectCategory} == null or selectCategory == '' ">すべて</option>
-            <option value="1" th:selected="${selectCategory} == '1'">植物</option>
-            <option value="2" th:selected="${selectCategory} == '2'">家具</option>
-            <option value="3" th:selected="${selectCategory} == '3'">タオル</option>
-        </select>
-        <button type="submit">検索</button>
-        </form>
-    </div>
+
+<header class="site-header" id="siteHeader" aria-hidden="true">
+
+    <nav class="nav-category">
+        <a th:href="@{/top}" th:class="${selectCategory == null or selectCategory == ''} ? 'is-active' : ''">すべて</a>
+        <a th:href="@{/top(selectCategory=1)}" th:class="${selectCategory == '1'} ? 'is-active' : ''">植物</a>
+        <a th:href="@{/top(selectCategory=2)}" th:class="${selectCategory == '2'} ? 'is-active' : ''">家具</a>
+        <a th:href="@{/top(selectCategory=3)}" th:class="${selectCategory == '3'} ? 'is-active' : ''">タオル</a>
+    </nav>
 
     <div class="cart-icon">
         <a href="/cart">
-            <img src="/images/cart.png" alt="カート" width="30">
+            <img src="/img/cart.png" alt="カート">
         </a>
     </div>
 </header>
@@ -43,10 +45,11 @@
             <img th:src="${items.image}" alt="商品画像">
             <p>商品名：<span th:text="${items.name}"></span></p>
             <p>価格: <span th:text="${items.price}"></span>円</p>
-            <a th:href="@{/items/{id}(id=${items.id})}">詳細を見る</a>
+            <a class="btn" th:href="@{/items/{id}(id=${items.id})}">詳細を見る</a>
         </div>
         <hr>
     </div>
     </div>
+</main>
 </body>
 </html>

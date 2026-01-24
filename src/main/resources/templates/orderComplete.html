@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- 常駐用ロゴ -->
+    <div class="logo-white">
+        <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
+    </div>
+
 </head>
 <body>
 <div class="main-contents">
@@ -13,7 +19,7 @@ Thank　You！！</br>
 注文完了メールを送信しました。</br>
 2営業日以内に発送予定です。</br>
     </div>
-    <p><a href="/top">← 商品一覧に戻る</a></p>
+    <p><a class = "button" href="/top">← 商品一覧に戻る</a></p>
 </div>
 </body>
 </html>

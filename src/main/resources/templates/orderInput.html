@@ -5,10 +5,23 @@
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
     <title>注文情報入力</title>
+
 </head>
-<body>
+
+<header class="site-header-upper">
+    <div class="cart-icon">
+        <a href="/cart">
+            <img src="/img/cart.png" alt="カート" width="30">
+        </a>
+    </div>
+
+    <!-- 常駐用ロゴ -->
+    <div class="logo-white">
+        <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
+    </div>
+</header>
+
 <div class="header-contents">
-    <h1>studio_mksg</h1>
     <h2>注文情報入力</h2>
 </div>
 <div class="main-contents">
@@ -205,13 +218,13 @@
                 <p><strong>合計金額：</strong> <span th:text="${total} + ' 円'"></span></p>
             </div>
 
-            <div class="button">
+            <div class="confirm-button">
                 <button type="button">
                     <input class="confirm-button" type="submit" value="注文情報確認画面へ"/>
                 </button>
             </div>
         </form>
-        <p><a href="/cart">← ショッピングカートに戻る</a></p>
+        <p><a class = "button" href="/cart">← ショッピングカートに戻る</a></p>
     </div>
 </div>
 </body>
