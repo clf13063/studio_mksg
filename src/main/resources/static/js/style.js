@@ -67,3 +67,38 @@ function searchAddressMain() {
 function searchReceiverAddress() {
     searchAddress("receiverZipcode", "receiverResult", "receiverAddress");
 }
+
+//画像アップロード時のプレビュー
+function previewImage(input) {
+
+    if (!input.files || input.files.length === 0) {
+        return;
+    }
+
+    const file = input.files[0];
+
+    // MIME type チェック
+    if (!file.type.startsWith("image/")) {
+        alert("画像ファイルのみ選択できます");
+        input.value = "";
+        clearPreview(preview);
+        return;
+    }
+    // サイズチェック（5MB）
+    if (file.size > 5 * 1024 * 1024) {
+        alert("画像サイズは5MB以内にしてください");
+        input.value = "";
+        clearPreview(preview);
+        return;
+    }
+
+    const preview = document.getElementById("preview");
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+}
+
+function clearPreview(preview) {
+    preview.removeAttribute("src");
+    preview.style.display = "none";
+}

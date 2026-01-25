@@ -3,6 +3,7 @@ package com.example.studio_mksg.controller;
 import com.example.studio_mksg.controller.form.ItemRegisterForm;
 import com.example.studio_mksg.repository.CategoryRepository;
 import com.example.studio_mksg.repository.ItemRepository;
+import com.example.studio_mksg.service.ImageStorageService;
 import com.example.studio_mksg.service.ItemService;
 import com.example.studio_mksg.service.SalesItemService;
 import com.example.studio_mksg.validator.ItemRegisterFormValidator;
@@ -15,11 +16,15 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+
 
 @Controller
 public class ItemRegisterController {
     @Autowired
     SalesItemService salesItemService;
+    @Autowired
+    ImageStorageService imageStorageService;
     @Autowired
     ItemRepository itemRepository;
     @Autowired
@@ -46,15 +51,15 @@ public class ItemRegisterController {
             @Valid @ModelAttribute("itemRegisterForm") ItemRegisterForm itemRegisterForm,
             BindingResult bindingResult,
             Model model
-    ) {
+    ) throws IOException {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryRepository.findAll());
-            ModelAndView mav = new ModelAndView("itemRegister");
-            return mav;
+            return new ModelAndView("itemRegister");
         }
-
-        // 登録実行
+        String imagePath =
+                imageStorageService.saveImage(itemRegisterForm.getImageFile());
+        itemRegisterForm.setImage(imagePath);
         salesItemService.registerItem(itemRegisterForm);
         return new ModelAndView("redirect:/salesManagementTop");
     }

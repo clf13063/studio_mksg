@@ -5,7 +5,6 @@
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
     <title>注文情報入力</title>
-
 </head>
 
 <header class="site-header-upper">
@@ -21,6 +20,7 @@
     </div>
 </header>
 
+<body>
 <div class="header-contents">
     <h2>注文情報入力</h2>
 </div>
@@ -210,21 +210,20 @@
                 </tbody>
             </table>
 
-<!--            <div class = "total-amount">-->
-<!--                <p><strong>合計金額：</strong> <span th:text="${orderForm.totalAmount} + ' 円'"></span></p>-->
-<!--            </div>-->
-
             <div class = "total-amount">
                 <p><strong>合計金額：</strong> <span th:text="${total} + ' 円'"></span></p>
             </div>
 
             <div class="confirm-button">
                 <button type="button">
-                    <input class="confirm-button" type="submit" value="注文情報確認画面へ"/>
+                    <input class="btn" type="submit" value="注文情報確認画面へ"/>
                 </button>
             </div>
         </form>
-        <p><a class = "button" href="/cart">← ショッピングカートに戻る</a></p>
+        <!--戻るボタン-->
+        <a href="/cart" class="back-button">
+            <button type="button"><img src="/img/back.png" alt="← ショッピングカートに戻る" class="back-button"></button>
+        </a>
     </div>
 </div>
 </body>

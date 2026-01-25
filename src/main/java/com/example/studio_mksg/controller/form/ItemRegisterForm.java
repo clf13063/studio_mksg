@@ -2,6 +2,7 @@ package com.example.studio_mksg.controller.form;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -12,4 +13,6 @@ public class ItemRegisterForm {
     private String stock;
     private String image;
     private Integer categoryId;
+    // 画像アップロード用
+    private MultipartFile imageFile;
 }

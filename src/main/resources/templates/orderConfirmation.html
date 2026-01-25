@@ -5,21 +5,29 @@
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
     <title>注文情報確認</title>
+</head>
+<header class="site-header-upper">
+    <div class="cart-icon">
+        <a href="/cart">
+            <img src="/img/cart.png" alt="カート" width="30">
+        </a>
+    </div>
 
     <!-- 常駐用ロゴ -->
     <div class="logo-white">
         <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
     </div>
+</header>
 
-</head>
 <body>
 <div class="header-contents">
-    <h1>studio_mksg</h1>
     <h2>注文情報確認</h2>
 </div>
 <div class="main-contents">
     <div class="order-form">
+        <div class="order-text">
         お客様情報
+        </div>
     <form method="post" th:action="@{/orderRegister}" th:object="${orderForm}">
         <table class="order-form-table">
             <tr>
@@ -153,14 +161,12 @@
         </div>
 
         <div class="confirm-button">
-            <button type="button"><input class="confirm-button" type="submit" value="注文を確定する"/></button>
+            <button type="button"><input class="btn" type="submit" value="注文を確定する"/></button>
         </div>
     </form>
-        <form method="get" th:action="@{/orderInput}" th:object="${orderForm}">
-            <button type="submit" class="button">
-                <img src="/img/back.png" alt="注文情報入力画面へ戻る">
-            </button>
-        </form>
+            <a href="/orderInput" class="back-button">
+                <button type="button"><img src="/img/back.png" alt="← 商品一覧に戻る" class="back-button"></button>
+            </a>
     </div>
 </div>
 </body>

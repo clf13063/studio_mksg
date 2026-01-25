@@ -86,8 +86,9 @@ public class OrderConfirmationController {
             // それ以外は想定外エラー
             throw e;
         }
-    // 注文完了後はカート削除
+    // 注文完了後はカート、注文情報削除
         session.removeAttribute("cart");
+        session.removeAttribute("orderForm");
     // 注文完了画面へリダイレクト
         return new ModelAndView("redirect:/orderComplete");
     }

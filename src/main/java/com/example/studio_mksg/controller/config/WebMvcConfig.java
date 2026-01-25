@@ -1,0 +1,19 @@
+package com.example.studio_mksg.controller.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Value("${item.image.upload-path}")
+    private String imageUploadPath;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/itemImage/**")
+                .addResourceLocations("file:" + imageUploadPath);
+    }
+}

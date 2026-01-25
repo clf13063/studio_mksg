@@ -56,6 +56,12 @@ public class OrderInputController {
             return mav;
         }
 
+        // ★ セッションに保存済みの orderForm があれば優先
+        OrderForm sessionForm = (OrderForm) session.getAttribute("orderForm");
+        if (sessionForm != null) {
+            orderForm = sessionForm;
+        }
+
         // ★毎回、カートから orderForm の item 部分を再作成する
         setupOrderFormFromCart(orderForm, cart);
 

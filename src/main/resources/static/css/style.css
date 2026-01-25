@@ -174,27 +174,32 @@ body.has-anim-logo.is-loaded::before {
     transform: none;
 }
 
-.button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 10px 20px;
-    font-size: 12px;
-    font-weight: bold;
-
-    color: #fff;
-    background-color: #223a70;
-
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    transition: all 0.3s ease;
-    text-decoration: none;
+button{
+    border: none; /*デフォルトの枠線を削除。*/
+    width: auto;
+    padding:0;
+    background:none;
+    line-height:0;
+    overflow:visible;
+    cursor:pointer;
+    vertical-align: middle;
 }
 
+button:disabled {
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    opacity: 1 !important;
+}
+
+button:hover{
+    opacity: 0.5;
+}
+
+.button{
+    text-align: center;
+}
 /* 常駐用ロゴのテキストリンク */
 .logo-fixed {
     position: absolute;
@@ -246,7 +251,25 @@ body.has-anim-logo.is-loaded::before {
     flex-direction: column;
     gap: 16px;
 }
-.nav-category a { color: #fff; text-decoration: none; }
+
+.nav-category a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* hover（「浮く＋強調」） */
+.nav-category a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateX(-4px);
+}
+
 .nav-category a.is-active {
     background: #fff;
     color: #0b1f3a;
@@ -255,13 +278,28 @@ body.has-anim-logo.is-loaded::before {
     border-radius: 4px;
 }
 
+/* active状態では hover 演出を強くしすぎない */
+.nav-category a.is-active:hover {
+    transform: none;
+}
+
 /* カートアイコン */
 .cart-icon {
     position: absolute;
     top: 30px;
     right: 20px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.cart-icon img { width: 28px; }
+
+.cart-icon:hover img {
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+.cart-icon img {
+     width: 32px;
+ }
 
 /* 共通メイン */
 main {
@@ -294,24 +332,47 @@ padding: 3px;
     margin-top: 70px;
     display: flex;
     flex-wrap: wrap;       /* 折り返しを許可 */
-    justify-content: center;
+    justify-content: flex-start;/* 中央寄せ */
     gap: 30px;             /* 商品カード同士の適度な間隔 */
+    align-items: stretch;
 }
 .item-card {
+    position: relative;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
+    width: 23%; /* 4列表示（100%÷4列=25%、gapを考慮） */
     padding: 15px;
+    min-width: 200px;
+    align-items: center;
+    text-align: center;
     box-sizing: border-box;
     transition: box-shadow 0.3s ease;
-    margin: 0 auto;
+    margin: 0 ;
 }
 .item-card:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     transform: translateY(-4px);
 }
-.item-card img { width: 150px; height: 150px; object-fit: cover; border-radius: 10px; }
+.item-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto 10px;
+}
 
+/* 画像＋テキストの塊 */
+.item-inner {
+    display: inline-block;
+    text-align: left;        /* 文左揃え基準 */
+}
+
+.detail-button {
+    display: block;
+    margin-top: 16px;
+}
 
 /* ============================================== */
 /* 3. カート画面のスタイル */
@@ -369,19 +430,25 @@ padding: 3px;
     margin: 5px 0 10px;
 }
 
-.button-updown {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #000000;
-    color: #FFF;
-    font-size: 20px;
-
+.delete-button{
+    width: 28px;
+    margin-bottom: 10px;
 }
+
+.delete-button:hover{
+    opacity: 0.5;
+}
+
 .quantity-box { width: 40px; height: 40px; text-align: center; border: 1px solid #ccc; border-radius: 10px; }
+
+.order-input-button{
+    display: flex;
+    flex-direction: column;   /* 縦並び */
+    align-items: center;      /* 横方向中央 */
+    justify-content: center;  /* 縦方向中央（必要なら） */
+    gap: 12px;                /* 合計とボタンの間隔 */
+    text-align: center;
+}
 
 /* ============================================== */
 /* 4. OrderInput.html / OrderConfilmation.html のスタイル */
@@ -398,6 +465,7 @@ padding: 3px;
     margin: auto;
     padding: 20px;
     background-color: white;
+    align-items: center;
     text-align: center;
     border-radius: 10px;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35)
@@ -426,20 +494,25 @@ padding: 3px;
 
 /*商品一覧*/
 .sold-out-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #e53935;
-  color: white;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #999;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;       /* 横中央 */
+    align-items: center;           /* 縦中央 */
 }
 
 .item-form-table {
     width: fit-content;
-    margin: 20px 0;
+    margin: 20px auto;
     border-collapse: collapse;
     font-size: 1rem;
     border: none;
@@ -481,21 +554,6 @@ padding: 3px;
     text-align: center;
 }
 
-/* 注文/確認ボタンのスタイル */
-.confirm-button{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: #234E4D;
-    border-radius: 20px;
-    font-size: 20px;
-    color: white;
-    padding: 5px 30px;
-    border: none;
-    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
-    cursor:pointer;
-}
-
-
 .infoMessages {
    background-color: #fff8e1;   /* 薄い黄色 */
    color: #8d6e00;
@@ -503,6 +561,7 @@ padding: 3px;
 
 .select-content {
     flex-grow: 1;
+}
 /* ============================================== */
 /* 5. OrderComplete.html のスタイル */
 /* ============================================== */
@@ -516,15 +575,15 @@ padding: 3px;
     text-align: center;
 }
 
-.select-content select,
-    /*padding: 8px;
+.select-content select{
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-}*/
+}
 
 .select-content button {
-    /*background-color: #111;
+    background-color: #111;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -545,33 +604,35 @@ padding: 3px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 2. 商品画像と価格・個数を一緒に表示（横並び） */
+/* 2. 商品画像と価格・個数を一緒に表示(横並び)*/
 .item-detail-container {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 10px 15px;
+    padding: 40px 50px;
     font-size: 1.2em;
-    background-color: #111;
+    background-color: #0f1115;
+    border-radius: 20px;
     color: #fff;
     width: 100%;
-
-}
-.item-card {
-    position: relative;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 23%; /* 4列表示（100%÷4列=25%、gapを考慮） */
-    min-width: 200px;
+    gap: 40px;
     box-sizing: border-box;
-    padding: 15px;
-   /*text-align: center;*/
-    transition: box-shadow 0.3s ease;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column; /* 縦並び */
+    gap: 14px;
+    color: #fff;
+    text-align: left;
+    width: 50%;
+    padding-top: 20px;
+    border-radius: 16px;
 }
 
 .item-card-img {
-    width: 150px;     /* 横幅を200pxに統一 */
+    width: 150px;     /* 横幅を150pxに統一 */
     height: 150px;    /* 高さも統一 */
     object-fit: cover; /* トリミングして枠に収める */
     border-radius: 10px; /* 角丸にしたい場合 */
@@ -581,31 +642,25 @@ padding: 3px;
 }
 
 .item-detail-img {
-  width: 45%; /* 画像をコンテナの約半分に */
-  max-width: 350px;
-  height: auto;
+    width: 320px;
+    height: 320px;
     object-fit: cover;
     border-radius: 8px;
-}
-
-.item-info {
-    width: 50%;
-    padding-top: 20px;
+    display: block;
 }
 
 .item-name {
-    font-size: 2.5rem;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #0b1f3a;
+    color: #ffffff;
 }
 
 .item-price {
-    font-size: 1.8rem;
-    color: #0b1f3a;
+    font-size: 23px;
+    color: #e0f2f1;
     font-weight: bold;
-    border-bottom: 2px solid #eee;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -619,6 +674,11 @@ padding: 3px;
     font-weight: bold;
     text-align: center;
     text-decoration: none;
+}
+
+.styled-button:hover {
+    background-color: #234E4D;
+    color: #fff;
 }
 
 .logo a:hover {
@@ -644,14 +704,6 @@ padding: 3px;
   padding: 15px;
   transition: box-shadow 0.3s ease;
   text-align: left; /* ← 左寄せに変更 */
-}
-
-/* 商品画像 */
-.item-card img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 10px;
 }
 
 /* 数量ボタン＋テキストを横並び */
@@ -705,7 +757,7 @@ padding: 3px;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-
+}
 
 .cart-button {
     background-color: #234E4D;
@@ -720,146 +772,54 @@ padding: 3px;
     box-shadow: 0 8px 20px rgba(11, 31, 58, 0.3);
 }
 
-/*salesManagementTop*/
-/* 商品管理画面コンテンツ全体 */
-.sales-management-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-/* テーブル全体 */
-.sales-item-content-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-/* ヘッダー */
-.sales-item-content-table th {
-    background-color: #f0f2f5;
-    text-align: center;
-    padding: 12px 10px;
-    font-weight: 600;
-    font-size: 14px;
-    color: #555;
-}
-
-/* セル共通 */
-.sales-item-content-table td {
-    padding: 12px 10px;
-    font-size: 14px;
-    vertical-align: middle;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-/* 左揃え */
-.left-text {
+/
+.back-button {
+    align-self: flex-start;
+    margin-left: 0;
+    margin-top: 14px;
+    display: inline-block;
     text-align: left;
+    gap: 8px;
+    width: 80%
 }
 
-/* 中央揃え */
-.center-text {
-    text-align: center;
-}
-
-/* 行ホバー */
-.sales-item-content-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* レスポンシブ */
-@media (max-width: 768px) {
-    .sales-item-content-table td,
-    .sales-item-content-table th {
-        padding: 10px 5px;
-        font-size: 13px;
-    }
-
-    .item-image {
-        width: 60px;
-        height: 60px;
-    }
-}
-
-.new-item-button{
-    margin-top: 5px;
-    margin-bottom: 10px;
-    width: 90%;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
-}
-
-/*itemRegister*/
-.item-register-form {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-/* テーブル全体 */
-.item-register-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-/* ラベルセル */
-.item-register-table th {
-    width: 120px;
-    text-align: left;
-    background-color: #f5f5f5;
-    padding: 12px 15px;
-    font-weight: 500;
-    border-radius: 6px 0 0 6px;
-}
-
-/* 入力セル */
-.item-register-table td {
-    padding: 10px 15px;
-}
-
-/* 入力欄 */
-.item-register-table input[type="text"],
-.item-register-table input[type="number"],
-.item-register-table select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    font-size: 14px;
-    box-sizing: border-box; /* これではみ出さない */
-    background-color: #fafafa;
-    transition: 0.2s all;
-}
-
-.item-register-table input[type="text"]:focus,
-.item-register-table input[type="number"]:focus,
-.item-register-table select:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-    outline: none;
+/* ============================================== */
+/* 7. orderComplete.html */
+/* ============================================== */
+.order-complete {
     background-color: #fff;
+    padding: 40px 60px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    max-width: 500px;
 }
 
-/* レスポンシブ対応 */
-@media (max-width: 550px) {
-    .item-register-form {
-        padding: 20px;
-    }
+.complete-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background-color: #234E4D;
+    color: #fff;
+    font-size: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .item-register-table th,
-    .item-register-table td {
-        display: block;
-        width: 100%;
-    }
+.complete-title {
+    font-size: 32px;
+    margin-bottom: 16px;
+    font-family: 'Sawarabi Mincho', serif;
+}
 
-    .item-register-table th {
-        margin-bottom: 6px;
-    }
+.complete-message {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #444;
+}
+
+.back-to-top {
+    margin-top: 30px;
+}

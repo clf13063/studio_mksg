@@ -19,7 +19,6 @@
     <a th:href="@{/top}" class="site-logo" onclick="resetAnim()">studio MKSG</a>
 </div>
 
-
 <header class="site-header" id="siteHeader" aria-hidden="true">
 
     <nav class="nav-category">
@@ -35,17 +34,22 @@
         </a>
     </div>
 </header>
+<main>
     <!-- 商品一覧表示 -->
     <div class="item-list">
     <div th:each="items : ${allItem}" class="item-card">
         <div>
-            <p><span class="sold-out-badge" th:if="${items.stock == 0}">
-      　　　　SOLD OUT
-    　　　　　</span></p>
+            <p><span class="sold-out-badge" th:if="${items.stock == 0}">SOLD OUT</span></p>
+            <div class="item-inner">
             <img th:src="${items.image}" alt="商品画像">
+            <div class="item-text">
             <p>商品名：<span th:text="${items.name}"></span></p>
             <p>価格: <span th:text="${items.price}"></span>円</p>
+            </div>
+            </div>
+            <div class="detail-button">
             <a class="btn" th:href="@{/items/{id}(id=${items.id})}">詳細を見る</a>
+            </div>
         </div>
         <hr>
     </div>

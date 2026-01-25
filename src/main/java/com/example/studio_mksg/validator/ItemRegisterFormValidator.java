@@ -7,13 +7,18 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Getter
 @Setter
 public class ItemRegisterFormValidator implements Validator {
+    private static final List<String> ALLOWED_EXTENSIONS =
+            Arrays.asList("jpg", "jpeg", "png");
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -74,8 +79,32 @@ public class ItemRegisterFormValidator implements Validator {
         }
 
         // --- 画像 ---
-        if (isBlankOrWidthSpace(form.getImage())) {
-            errors.rejectValue("image", "required.image", "・商品画像を入力してください");
+        MultipartFile file = form.getImageFile();
+
+        if (file == null || file.isEmpty()) {
+            errors.rejectValue("imageFile", "image.required", "・画像は必須です");
+            return;
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || !originalFilename.contains(".")) {
+            errors.rejectValue("imageFile", "image.invalid", "・画像ファイルを選択してください");
+            return;
+        }
+
+        String ext = originalFilename
+                .substring(originalFilename.lastIndexOf('.') + 1)
+                .toLowerCase();
+
+        if (!ALLOWED_EXTENSIONS.contains(ext)) {
+            errors.rejectValue("imageFile", "image.extension",
+                    "・jpg / jpeg / png のみ登録できます");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            errors.rejectValue("imageFile", "image.type",
+                    "・画像ファイルを選択してください");
         }
     }
 }

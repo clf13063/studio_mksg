@@ -61,18 +61,22 @@
             <!-- 削除ボタン -->
             <form th:action="@{/cart/remove}" method="post" style="display:inline;">
                 <input type="hidden" name="id" th:value="${item.id}">
-                <button type="submit">削除</button>
+                <input type="image" src="/img/deleteBox.png" alt="削除" class="delete-button"/>
             </form>
     </div>
     </div>
 
     <hr>
-    <p>合計: <span th:text="${total}"></span>円</p>
-
-        <p><a href="/orderInput" class="btn">購入画面へ</a></p>
-
-
-    <p><a href="/top" class="button">← 商品一覧に戻る</a></p>
+        <div class="order-input-button" th:if="${cart != null and !cart.isEmpty()}">
+    　　　　　<p>合計: <span th:text="${total}"></span>円</p>
+            <p>
+                <a href="/orderInput" class="btn">購入画面へ</a>
+            </p>
+        </div>
+        <!--戻るボタン-->
+        <a href="/top" class="back-button">
+            <button type="button"><img src="/img/back.png" alt="← 商品一覧に戻る" class="back-button"></button>
+        </a>
     </div>
 </main>
 </body>

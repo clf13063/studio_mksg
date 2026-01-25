@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
+    <link th:href="@{/css/salesManagement.css}" rel="stylesheet">
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
     <title>管理画面</title>
 </head>
-<body>
+<body class="sales-management-page">
 <div class="header-contents">
-    <h1>studio_mksg</h1>
+    <h1> <a href="/salesManagementTop" class="logo-fixed">studio MKSG</a></h1>
     <h2>販売管理TOP</h2>
 </div>
 <div class="main-contents">
     <div class="sales-management-content">
         <!--商品情報登録画面遷移ボタン-->
-        <a href="/itemRegister">
+        <a href="/itemRegister" class="new-item-link">
             <button type="button"><img src="/img/itemNew.png" alt="新規商品登録" class="new-item-button"></button>
         </a>
         <div class="item-content">
             <table class="sales-item-content-table">
                 <thead>
                 <tr class="sales-items-title">
-                    <div class="sales-items-title">
                         <th class="sales-items-title-id">ID</th>
                         <th class="sales-items-title-image">写真</th>
                         <th class="sales-items-title-name">商品名</th>
@@ -31,7 +31,6 @@
                         <th class="sales-items-title-category">カテゴリー</th>
                         <th class="sales-items-title-created-date">作成日時</th>
                         <th class="sales-items-title-updated-date">更新日時</th>
-                    </div>
                 </tr>
                 </thead>
                 <tbody>

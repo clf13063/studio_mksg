@@ -54,15 +54,7 @@ public class OrderService {
                     "在庫不足の商品があったため、数量を調整しました。"
             );
         }
-            // 在庫を減らす
-        for (CartItem ci : cart) {
-            Item item = itemRepository.findById(ci.getId())
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("商品が見つかりません: ID=" + ci.getId()));
 
-            item.setStock(item.getStock() - ci.getQuantity());
-            itemRepository.save(item);
-        }
         // 2. 注文情報作成（顧客情報のみ）
         Order order = new Order();
         order.setName(orderForm.getLastName() + " " + orderForm.getFirstName());

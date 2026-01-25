@@ -24,20 +24,23 @@
 
     <div class="item-detail-container">
         <img th:src="${items.image}" alt="商品画像" class="item-detail-img">
-        <p>商品名: <span th:text="${items.name}"></span></p>
-        <p>価格: <span th:text="${items.price}"></span>円</p>
-        <p><span class="sold-out-badge" th:if="${items.stock == 0}">
-      　　　　SOLD OUT
-    　　 </span></p>
+        <div class="item-info">
+        <p>商品名: <span th:text="${items.name}" class="item-name"></span></p>
+        <p>価格: <span th:text="${items.price}" class="item-price"></span> 円</p>
+        <p><span class="sold-out-badge" th:if="${items.stock == 0}">SOLD OUT</span></p>
         <p th:if="${items.stock == 0}">
       　　　　※この商品は現在売り切れです
     　　 </p>
         <p><span th:if="${items.stock != 0}">
       　　　　<a class= "btn" th:href="@{/cart/{id}(id=${items.id})}">カートに入れる</a>
     　　 </span></p>
+        </div>
     </div>
 
-    <a class="button" href="/top">← 商品一覧に戻る</a>
+    <!--戻るボタン-->
+    <a href="/top">
+        <button type="button"><img src="/img/back.png" alt="← 商品一覧に戻る" class="back-button"></button>
+    </a>
 
 </main>
 

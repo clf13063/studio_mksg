@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/salesManagement.css}" rel="stylesheet">
     <script th:src="@{/js/style.js}" rel="script"></script>
     <title>商品情報登録</title>
 </head>
-<body>
+<body class="sales-management-page">
 <div class="header-contents">
-    <h1>studio_mksg</h1>
+    <h1> <a href="/salesManagementTop" class="logo-fixed">studio MKSG</a></h1>
     <h2>商品情報登録</h2>
 </div>
 
 <div class="main-contents">
     <div class="item-register-form">
-<form th:action="@{/itemRegister}" th:object="${itemRegisterForm}" method="post">
+    <form th:action="@{/itemRegister}" th:object="${itemRegisterForm}" method="post"  enctype="multipart/form-data">
 
-    <table class="item-register-table">
+        <table class="item-register-table">
         <!-- 商品名 -->
         <tr>
             <th>商品名</th>
@@ -44,11 +45,13 @@
             </td>
         </tr>
 
-        <!-- 画像URL -->
+        <!-- 画像-->
         <tr>
-            <th>画像URL</th>
+            <th>画像</th>
             <td>
-                <input type="text" th:field="*{image}">
+                <input type="file" th:field="*{imageFile}" accept="itemImage/*" onchange="previewImage(this)"><br>
+                <img id="preview" style="width: 200px;height: 200px;object-fit: cover; display: none;">
+                <div th:if="${#fields.hasErrors('imageFile')}" th:errors="*{imageFile}" class="errorMessages"></div>
             </td>
         </tr>
 
@@ -76,6 +79,9 @@
 </form>
     </div>
 </div>
-<p><a href="/salesManagementTop">← 販売管理TOPに戻る</a></p>
+<!--戻るボタン-->
+<a href="/salesManagementTop">
+    <button type="button"><img src="/img/back.png" alt="← 販売管理TOPに戻る" class="back-button"></button>
+</a>
 </body>
 </html>
