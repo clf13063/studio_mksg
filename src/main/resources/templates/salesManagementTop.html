@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <link th:href="@{/css/salesManagement.css}" rel="stylesheet">
-    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script th:src="@{/js/style.js}" rel="scriptSheet"></script>
+    <script th:src="@{/js/style.js}" rel="script"></script>
+    <script th:src="@{/js/toast.js}"></script>
     <title>管理画面</title>
 </head>
 <body class="sales-management-page">
@@ -14,6 +14,12 @@
     <h2>販売管理TOP</h2>
 </div>
 <div class="main-contents">
+    <div class="error-banner" th:if="${errorMessage}">
+        <span th:text="${errorMessage}"></span>
+    </div>
+    <div th:if="${successMessage}" id="toast" class="toast">
+        <span th:text="${successMessage}"></span>
+    </div>
     <div class="sales-management-content">
         <!--商品情報登録画面遷移ボタン-->
         <a href="/itemRegister" class="new-item-link">
@@ -23,14 +29,15 @@
             <table class="sales-item-content-table">
                 <thead>
                 <tr class="sales-items-title">
-                        <th class="sales-items-title-id">ID</th>
-                        <th class="sales-items-title-image">写真</th>
-                        <th class="sales-items-title-name">商品名</th>
-                        <th class="sales-items-title-price">価格</th>
-                        <th class="sales-items-title-stock">在庫数</th>
-                        <th class="sales-items-title-category">カテゴリー</th>
-                        <th class="sales-items-title-created-date">作成日時</th>
-                        <th class="sales-items-title-updated-date">更新日時</th>
+                    <th class="sales-items-title-id">ID</th>
+                    <th class="sales-items-title-image">写真</th>
+                    <th class="sales-items-title-name">商品名</th>
+                    <th class="sales-items-title-price">価格</th>
+                    <th class="sales-items-title-stock">在庫数</th>
+                    <th class="sales-items-title-category">カテゴリー</th>
+                    <th class="sales-items-title-created-date">作成日時</th>
+                    <th class="sales-items-title-updated-date">更新日時</th>
+                    <th class="sales-items-edit">編集</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,13 +50,34 @@
                     <td class="center-text price"><span th:text="${salesItem.price}"></span></td>
                     <td class="center-text stock"><span th:text="${salesItem.stock}"></span></td>
                     <td class="left-text category"><span th:text="${salesItem.category.category}"></span></td>
-                    <td class="center-text created"><span th:text="${#dates.format(salesItem.createdDate, 'yyyy/MM/dd HH:mm:ss')}"/></td>
-                    <td class="center-text updated"><span th:text="${#dates.format(salesItem.updatedDate, 'yyyy/MM/dd HH:mm:ss')}"/></td>
+                    <td class="center-text created"><span th:text="${#temporals.format(salesItem.createdDate, 'yyyy/MM/dd HH:mm:ss')}"/></td>
+                    <td class="center-text updated"><span th:text="${#temporals.format(salesItem.updatedDate, 'yyyy/MM/dd HH:mm:ss')}"/></td>
+                    <td class="center-text edit">
+                        <button type="button"
+                            th:attr="onclick=|openItemEditModal(
+                            ${salesItem.id},
+                            '${salesItem.name}',
+                            ${salesItem.price},
+                            ${salesItem.stock},
+                            ${salesItem.category.id},
+                            '${salesItem.image}',
+                            ${salesItem.version}
+                            )|">
+                            <img src="/img/itemEdit.png" alt="編集" class="item-edit-button">
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
                 </table>
         </div>
     </div>
 </div>
+<div th:replace="~{itemEditModal :: itemEditModal}"></div>
+<!-- モーダル再表示 -->
+<script th:if="${isEditModalOpen}">
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("editModal").classList.remove("hidden");
+    });
+</script>
 </body>
 </html>

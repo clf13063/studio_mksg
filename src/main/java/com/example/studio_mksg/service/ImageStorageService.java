@@ -38,4 +38,17 @@ public class ImageStorageService {
         // DBに保存するパス
         return "/itemImage/" + fileName;
     }
+
+    //削除
+    public void deleteImage(String path) {
+        if (path == null) return;
+
+        Path filePath = Paths.get(UPLOAD_DIR, path);
+
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -18,6 +19,7 @@ public class SalesItemForm {
     private String stock;
     private String categoryId;
     private Category category;
-    private Date createdDate;
-    private Date updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+    private Integer version;
 }

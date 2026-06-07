@@ -2,8 +2,11 @@ package com.example.studio_mksg.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -36,9 +39,14 @@ public class Item {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "created_date", insertable = false, updatable = false)
-    private Date createdDate;
+    @CreationTimestamp
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
 
-    @Column(name = "updated_date", insertable = false, updatable = true)
-    private Date updatedDate;
+    @UpdateTimestamp
+    @Column(name = "updated_date", updatable = true)
+    private LocalDateTime updatedDate;
+
+    @Version
+    private Integer version;
 }

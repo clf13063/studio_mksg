@@ -102,3 +102,41 @@ function clearPreview(preview) {
     preview.removeAttribute("src");
     preview.style.display = "none";
 }
+
+//商品編集モーダル画面
+function openItemEditModal(id, name, price, stock, categoryId, image, version) {
+    document.getElementById("edit-id").innerText = id;
+    document.getElementById("edit-id-input").value = id;
+    document.getElementById("edit-name").value = name;
+    document.getElementById("edit-price").value = price;
+    document.getElementById("edit-stock").value = stock;
+    document.getElementById("edit-category").value = String(categoryId);
+    document.getElementById("edit-preview").src = image;
+    document.getElementById("edit-image").value = image;
+    document.getElementById("edit-preview").style.display = "block";
+    document.getElementById("edit-version").value = version;
+
+    document.getElementById("editModal").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("editModal").classList.add("hidden");
+    // エラーメッセージ削除
+    document.querySelectorAll(".errorMessages").forEach(function (error) {
+        error.innerText = "";
+    });
+    // file input リセット
+    document.getElementById("edit-image-file").value = "";
+}
+
+// 画像プレビュー
+function previewEditImage(input) {
+    const file = input.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("edit-preview").src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+}

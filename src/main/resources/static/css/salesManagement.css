@@ -196,3 +196,82 @@
         margin-bottom: 6px;
     }
 }
+
+.sales-management-page .item-edit-button{
+    display:block;
+    width: 35%;
+    margin: auto;
+}
+
+.error-banner {
+    color: #d32f2f;
+    background: #fdecea;
+    border: 1px solid #f5c2c7;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/*itemEditModal*/
+.modal.hidden {
+    display: none;
+}
+
+/* モーダル全体（背景） */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.5); /* 背景暗く */
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 中身 */
+.modal-content {
+    background: #fff;
+    width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* モーダルヘッダー */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* モーダルフッター */
+.modal-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* トーストメッセージ */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}

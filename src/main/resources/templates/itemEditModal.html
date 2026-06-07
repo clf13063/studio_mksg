@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/salesManagement.css}" rel="stylesheet">
+    <script th:src="@{/js/style.js}" rel="script"></script>
+    <title>商品情報登録</title>
+</head>
+<body>
+<!-- モーダル -->
+<div th:fragment="itemEditModal">
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+
+            <!-- ヘッダー -->
+            <div class="modal-header">
+                <h2>商品編集</h2>
+                <button type="button" onclick="closeModal()">×</button>
+            </div>
+
+            <!-- フォーム -->
+            <form th:action="@{/itemUpdate}" th:object="${itemUpdateForm}" method="post" enctype="multipart/form-data">
+
+                <table class="item-register-table">
+
+                    <!-- ID（表示のみ） -->
+                    <tr>
+                        <th>ID</th>
+                        <td>
+                            <span id="edit-id" th:text="*{id}"></span>
+                            <input type="hidden" th:field="*{id}" id="edit-id-input">
+                        </td>
+                    </tr>
+
+                    <!-- 商品名 -->
+                    <tr>
+                        <th>商品名</th>
+                        <td>
+                            <input type="text" th:field="*{name}" id="edit-name">
+                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="errorMessages"></div>
+                        </td>
+                    </tr>
+
+                    <!-- 価格 -->
+                    <tr>
+                        <th>価格</th>
+                        <td>
+                            <input type="number" min="0" th:field="*{price}" id="edit-price">
+                            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="errorMessages"></div>
+                        </td>
+                    </tr>
+
+                    <!-- 在庫 -->
+                    <tr>
+                        <th>在庫数</th>
+                        <td>
+                            <input type="number" min="0" th:field="*{stock}" id="edit-stock">
+                            <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="errorMessages"></div>
+                        </td>
+                    </tr>
+
+                    <!-- 画像 -->
+                    <tr>
+                        <th>画像</th>
+                        <td>
+                            <p>画像を変更する場合のみ選択してください</p>
+                            <input type="file"
+                                   id="edit-image-file"
+                                   th:field="*{imageFile}"
+                                   accept="image/*"
+                                   onchange="previewEditImage(this)"><br>
+                            <p>現在の画像</p>
+                            <img id="edit-preview" th:src="*{image}"
+                                 style="width: 200px;height: 200px;object-fit: cover;">
+                            <input type="hidden" th:field="*{image}" id="edit-image">
+
+                            <div th:if="${#fields.hasErrors('imageFile')}"
+                                 th:errors="*{imageFile}"
+                                 class="errorMessages"></div>
+                        </td>
+                    </tr>
+
+                    <!-- カテゴリ -->
+                    <tr>
+                        <th>カテゴリ</th>
+                        <td>
+                            <select th:field="*{categoryId}" id="edit-category">
+                                <option value="">--選択してください--</option>
+                                <option th:each="cat : ${categories}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.category}">
+                                </option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('categoryId')}"
+                                 th:errors="*{categoryId}"
+                                 class="errorMessages"></div>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- ボタン -->
+                <div class="modal-footer">
+                    <div class="button">
+                        <button type="button" onclick="closeModal()">キャンセル</button>
+                        <input type="hidden"
+                               th:field="*{version}" id="edit-version">
+                        <button type="submit">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
