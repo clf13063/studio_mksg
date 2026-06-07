@@ -1,11 +1,9 @@
 package com.example.studio_mksg.controller;
 
-import com.example.studio_mksg.controller.form.ItemForm;
 import com.example.studio_mksg.controller.form.ItemUpdateForm;
 import com.example.studio_mksg.controller.form.SalesItemForm;
 import com.example.studio_mksg.repository.CategoryRepository;
 import com.example.studio_mksg.repository.ItemRepository;
-import com.example.studio_mksg.service.ItemService;
 import com.example.studio_mksg.service.SalesItemService;
 import com.example.studio_mksg.validator.ItemUpdateFormValidator;
 import jakarta.validation.Valid;
@@ -26,8 +24,6 @@ import java.util.List;
 public class SalesManagementTopController {
     @Autowired
     SalesItemService salesItemService;
-    @Autowired
-    ItemRepository itemRepository;
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
