@@ -109,4 +109,15 @@ public class SalesItemService {
 
         itemRepository.save(item);
     }
+
+    //削除
+    @Transactional
+    public void delete(String id) {
+
+        Item item = itemRepository.findById(Integer.valueOf(id))
+                .orElseThrow();
+
+        imageStorageService.deleteImage(item.getImage());
+        itemRepository.delete(item);
+    }
 }

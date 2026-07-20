@@ -140,3 +140,17 @@ function previewEditImage(input) {
         reader.readAsDataURL(file);
     }
 }
+
+//商品削除
+function deleteItem(id) {
+
+    if (!confirm("商品を削除しますか？")) {
+        return;
+    }
+    const form = document.createElement("form");
+    form.method = "post";
+    form.action = "/itemDelete/" + id;
+
+    document.body.appendChild(form);
+    form.submit();
+}

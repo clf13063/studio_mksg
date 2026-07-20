@@ -38,6 +38,7 @@
                     <th class="sales-items-title-created-date">作成日時</th>
                     <th class="sales-items-title-updated-date">更新日時</th>
                     <th class="sales-items-edit">編集</th>
+                    <th class="sales-items-delete">削除</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,6 +65,12 @@
                             ${salesItem.version}
                             )|">
                             <img src="/img/itemEdit.png" alt="編集" class="item-edit-button">
+                        </button>
+                    </td>
+                    <td class="center-text edit">
+                        <button type="button"
+                                th:attr="onclick=|deleteItem(${salesItem.id})|">
+                            <img src="/img/deleteBox.png" alt="削除" class="item-delete-button">
                         </button>
                     </td>
                 </tr>

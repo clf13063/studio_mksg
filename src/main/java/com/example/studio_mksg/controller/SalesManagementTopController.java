@@ -86,4 +86,16 @@ public class SalesManagementTopController {
 
         return "redirect:/salesManagementTop";
     }
+
+    //削除
+    @PostMapping("/itemDelete/{id}")
+    public String delete(
+            @PathVariable String id,
+            RedirectAttributes redirectAttributes) {
+
+        salesItemService.delete(id);
+        redirectAttributes.addFlashAttribute("successMessage", "削除しました");
+
+        return "redirect:/salesManagementTop";
+    }
 }

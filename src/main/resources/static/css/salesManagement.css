@@ -203,6 +203,12 @@
     margin: auto;
 }
 
+.sales-management-page .item-delete-button{
+    display:block;
+    width: 35%;
+    margin: auto;
+}
+
 .error-banner {
     color: #d32f2f;
     background: #fdecea;

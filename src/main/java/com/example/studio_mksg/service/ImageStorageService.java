@@ -40,15 +40,20 @@ public class ImageStorageService {
     }
 
     //削除
-    public void deleteImage(String path) {
-        if (path == null) return;
+    public void deleteImage(String imagePath) {
 
-        Path filePath = Paths.get(UPLOAD_DIR, path);
-
+        if (imagePath == null || imagePath.isEmpty()) {
+            return;
+        }
         try {
-            Files.deleteIfExists(filePath);
+            String fileName = imagePath.replace("/itemImage/", "");
+
+            Path path = Paths.get(UPLOAD_DIR, fileName);
+
+            Files.deleteIfExists(path);
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("画像削除に失敗しました", e);
         }
     }
 }
